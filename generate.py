@@ -168,7 +168,8 @@ REAL_ARTICLES = [
      "image": "articles/tempio-1.jpg"},
 ]
 
-ALL = EXISTING + new_data + REAL_ARTICLES
+# Only real articles appear on the site now (demo content retired).
+ALL = list(REAL_ARTICLES)
 ALL.sort(key=lambda a: a["date"], reverse=True)
 
 ARTICLE_TEMPLATE = '''<!DOCTYPE html>
@@ -281,26 +282,8 @@ GALLERY_TPL = '''
   </div>
 '''
 
-count = 0
-for i, a in enumerate(new_data):
-    cat = a["category"]
-    p1 = BANK_P[cat][i % len(BANK_P[cat])]
-    p2 = BANK_P[cat][(i + 1) % len(BANK_P[cat])]
-    q_text, q_cite = BANK_Q[cat][i % len(BANK_Q[cat])]
-    gallery = GALLERY_TPL.format(slug=a["slug"], title=a["title"]) if i % 4 == 0 else ""
-    html = ARTICLE_TEMPLATE.format(
-        title=a["title"], desc=a["desc"], slug=a["slug"], author=a["author"],
-        catlabel=CATLABEL[cat], category=cat, iso_date=a["date"].isoformat(),
-        display_date=fmt_date(a["date"]), accent=ACCENT[cat],
-        lead_extra=LEAD_EXTRA[cat], p1=p1, p2=p2,
-        quote_text=q_text, quote_cite=q_cite, gallery=gallery,
-        closing=BANK_CLOSE[cat],
-    )
-    with open("articles/{}.html".format(a["slug"]), "w", encoding="utf-8") as f:
-        f.write(html)
-    count += 1
-
-print("Generati {} nuovi articoli".format(count))
+# Demo/placeholder article generation removed: the site now only contains
+# real, hand-written articles (listed in REAL_ARTICLES above).
 
 # ---------------------------------------------------------------------------
 # Pagination: 12 cards per page
@@ -333,6 +316,8 @@ def page_filename(n):
     return "index.html" if n == 1 else "page-{}.html".format(n)
 
 def pagination_nav(current):
+    if n_pages <= 1:
+        return ""
     items = []
     if current > 1:
         items.append('<a class="page-btn" href="{}">← Precedente</a>'.format(page_filename(current - 1)))
@@ -404,7 +389,7 @@ PAGE_TPL = '''<!DOCTYPE html>
 
 <footer class="site-footer">
   <div>© 2026 Interference Media</div>
-  <div>Musica — Città — Società — Idee — Pagina {current} di {total}</div>
+  <div>Musica — Città — Società — Idee{page_note}</div>
 </footer>
 
 <script src="script.js"></script>
@@ -429,7 +414,8 @@ for n, page_articles in enumerate(pages, start=1):
     html = PAGE_TPL.format(
         page_suffix="" if n == 1 else " — Pagina {}".format(n),
         page_url="" if n == 1 else page_filename(n),
-        cards=cards, pagination=pagination_nav(n), current=n, total=n_pages,
+        cards=cards, pagination=pagination_nav(n),
+        page_note="" if n_pages <= 1 else " — Pagina {} di {}".format(n, n_pages),
     )
     with open(page_filename(n), "w", encoding="utf-8") as f:
         f.write(html)
