@@ -157,15 +157,17 @@ REAL_ARTICLES = [
     {"slug": "ideas-demoralizzazione-arma-di-guerra",
      "title": "LA DEMORALIZZAZIONE COME ARMA DI GUERRA",
      "desc": "La guerra invisibile per il controllo della cultura.",
-     "category": "ideas", "author": "Tommaso Dapri", "date": date(2026, 7, 20),
+     "category": "ideas", "author": "Thomas Anderson", "date": date(2026, 7, 20),
      "href": "articles/ideas-demoralizzazione-arma-di-guerra.html",
-     "image": "articles/demoralizzazione-italia-1963.jpg"},
+     "image": "articles/demoralizzazione-italia-1963.jpg",
+     "avatar": "articles/thomas-anderson.jpg"},
     {"slug": "society-tempio-futuro-perduto",
      "title": "LA RIVOLUZIONE DEL CLUBBING ITALIANO: IL TEMPIO DI MILANO",
      "desc": "Come un'ex officina tranviaria abbandonata è diventata una delle comunità culturali indipendenti più estese d'Italia.",
      "category": "society", "author": "Thomas Anderson", "date": date(2026, 7, 28),
      "href": "articles/society-tempio-futuro-perduto.html",
-     "image": "articles/tempio-1.jpg"},
+     "image": "articles/tempio-1.jpg",
+     "avatar": "articles/thomas-anderson.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
@@ -305,7 +307,7 @@ CARD_TPL = '''  <a class="card" data-cat="{category}" href="{href}">
       <h2 class="card-title">{title}</h2>
       <p class="card-desc">{desc}</p>
       <div class="card-meta">
-        <span class="card-avatar"><img src="https://i.pravatar.cc/64?u={author_slug}" alt=""></span>
+        <span class="card-avatar"><img src="{avatar}" alt=""></span>
         {author}
       </div>
     </div>
@@ -405,11 +407,12 @@ for n, page_articles in enumerate(pages, start=1):
     cards = ""
     for a in page_articles:
         image = a.get("image", "https://picsum.photos/seed/{}/900/700".format(a["slug"]))
+        avatar = a.get("avatar", "https://i.pravatar.cc/64?u={}".format(slugify(a["author"])))
         cards += CARD_TPL.format(
             category=a["category"], href=a.get("href", ARTICLE_HREF), image=image,
             slug=a["slug"], title=a["title"], catlabel=CATLABEL[a["category"]],
             display_date=fmt_date(a["date"]), desc=a["desc"],
-            author_slug=slugify(a["author"]), author=a["author"],
+            author=a["author"], avatar=avatar,
         )
     html = PAGE_TPL.format(
         page_suffix="" if n == 1 else " — Pagina {}".format(n),
