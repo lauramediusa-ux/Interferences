@@ -512,10 +512,10 @@ body.distraction-free .article-quote {
   margin-bottom: 18px;
 }
 
-.article-category.music { background: var(--color-music); }
-.article-category.cities { background: var(--color-cities); }
-.article-category.society { background: var(--color-society); }
-.article-category.ideas { background: var(--color-ideas); }
+.article-category.music { background: var(--accent-music); }
+.article-category.cities { background: var(--accent-cities); }
+.article-category.society { background: var(--accent-society); }
+.article-category.ideas { background: var(--accent-ideas); }
 
 .article-title {
   font-size: 46px;
@@ -772,10 +772,10 @@ body.distraction-free .article-preface {
   color: var(--black);
 }
 
-.related-category.music { background: var(--color-music); }
-.related-category.cities { background: var(--color-cities); }
-.related-category.society { background: var(--color-society); }
-.related-category.ideas { background: var(--color-ideas); }
+.related-category.music { background: var(--accent-music); }
+.related-category.cities { background: var(--accent-cities); }
+.related-category.society { background: var(--accent-society); }
+.related-category.ideas { background: var(--accent-ideas); }
 
 .related-card-title {
   font-size: 18px;
