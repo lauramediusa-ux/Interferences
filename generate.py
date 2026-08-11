@@ -175,6 +175,13 @@ REAL_ARTICLES = [
      "href": "articles/society-musica-finta-scena-italiana.html",
      "image": "articles/musica-2026-delia.jpg",
      "avatar": "articles/thomas-anderson.jpg"},
+    {"slug": "ideas-forza-carattere-estetica",
+     "title": "LA FORZA DEL CARATTERE HA LASCIATO POSTO ALL'ESTETICA",
+     "desc": "Una civiltà che sostituisce la costruzione del carattere con la costruzione dell'immagine, produce individui dipendenti dalla validazione esterna.",
+     "category": "ideas", "author": "Thomas Anderson", "date": date(2026, 7, 29),
+     "href": "articles/ideas-forza-carattere-estetica.html",
+     "image": "articles/estetica-1-pubblicita-universita.jpg",
+     "avatar": "articles/thomas-anderson.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
