@@ -168,6 +168,13 @@ REAL_ARTICLES = [
      "href": "articles/society-tempio-futuro-perduto.html",
      "image": "articles/tempio-1.jpg",
      "avatar": "articles/thomas-anderson.jpg"},
+    {"slug": "society-musica-finta-scena-italiana",
+     "title": "LA MUSICA FATTA CON L'AI È FINTA COME LA SCENA ITALIANA DI OGGI",
+     "desc": "L'Italia musicale del 2026 sembra un gigantesco talent permanente per persone che odiano la musica.",
+     "category": "society", "author": "Thomas Anderson", "date": date(2026, 7, 28),
+     "href": "articles/society-musica-finta-scena-italiana.html",
+     "image": "articles/musica-2026-delia.jpg",
+     "avatar": "articles/thomas-anderson.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
