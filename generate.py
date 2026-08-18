@@ -182,6 +182,12 @@ REAL_ARTICLES = [
      "href": "articles/ideas-forza-carattere-estetica.html",
      "image": "articles/estetica-1-pubblicita-universita.jpg",
      "avatar": "articles/thomas-anderson.jpg"},
+    {"slug": "music-scuola-della-techno",
+     "title": "LA PRIMA SCUOLA DELLA TECHNO AL MONDO È IN ITALIA",
+     "desc": "Da Milano un progetto unico: migliaia di studenti, lezioni gratuite, ricerca culturale, workshop con artisti internazionali e un'idea radicale che trasforma la musica elettronica da semplice intrattenimento a patrimonio culturale.",
+     "category": "music", "author": "Ada Scielbi", "date": date(2026, 7, 30),
+     "href": "articles/music-scuola-della-techno.html",
+     "image": "articles/scuola-techno-1-studio.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
