@@ -200,6 +200,13 @@ REAL_ARTICLES = [
      "category": "music", "author": "Anna Maria Rita dall'Ongaro", "date": date(2026, 8, 1),
      "href": "articles/music-italo-ghetto.html",
      "image": "articles/italo-ghetto-2-not-just-disco.jpg"},
+    {"slug": "ideas-sinistra-reel-caroselli",
+     "title": "LA SINISTRA ERA IL POPOLO DEI LIBRI E DELLA MILITANZA. OGGI È IL PUBBLICO DI REEL E CAROSELLI.",
+     "desc": "Dalle riviste ai podcast, dagli avvocati social alle attiviste-brand: la sinistra ha sostituito il pensiero politico con contenuti rassicuranti, indignazioni seriali e carriere individuali perfettamente integrate nell'establishment.",
+     "category": "ideas", "author": "Thomas Anderson", "date": date(2026, 8, 2),
+     "href": "articles/ideas-sinistra-reel-caroselli.html",
+     "image": "articles/sinistra-reel-1-copertina-ai.png",
+     "avatar": "articles/thomas-anderson.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
