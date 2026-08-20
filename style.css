@@ -668,6 +668,29 @@ body.distraction-free .article-preface {
   letter-spacing: 0.4px;
 }
 
+.interview-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--grey-2);
+  margin: 60px 0 24px;
+  padding-top: 40px;
+  border-top: 1px solid var(--grey-3);
+}
+
+.interview-q {
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.35;
+  margin: 40px 0 14px;
+  padding-left: 20px;
+  border-left: 4px solid var(--accent, var(--black));
+}
+
+.interview-a { margin: 0 0 24px; }
+
 .article-image-block { margin: 40px 0; }
 .article-image-block img { width: 100%; border-radius: var(--radius); }
 .article-image-block .caption {

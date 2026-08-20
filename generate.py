@@ -214,6 +214,12 @@ REAL_ARTICLES = [
      "href": "articles/cities-sicurezza-milano-meme-elettorale.html",
      "image": "articles/sicurezza-milano-4-tensione-milanoinmovimento.jpg",
      "avatar": "articles/thomas-anderson.jpg"},
+    {"slug": "music-oriental-techno-club-intervista",
+     "title": "IL PRIMO CLUB ELETTRONICO 100% ASIATICO IN EUROPA: ORIENTAL TECHNO CLUB A MILANO",
+     "desc": "Intervista al collettivo che ha trasformato la cultura elettronica asiatica in un ponte reale tra Asia ed Europa, tra musica, arti visive, performance e ritualità.",
+     "category": "music", "author": "Anna Maria Rita dall'Ongaro", "date": date(2026, 8, 4),
+     "href": "articles/music-oriental-techno-club-intervista.html",
+     "image": "articles/otc-1-muro-nuta-sokol.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
