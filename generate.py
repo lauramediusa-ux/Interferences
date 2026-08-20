@@ -188,6 +188,12 @@ REAL_ARTICLES = [
      "category": "music", "author": "Ada Scielbi", "date": date(2026, 7, 30),
      "href": "articles/music-scuola-della-techno.html",
      "image": "articles/scuola-techno-1-studio.jpg"},
+    {"slug": "society-centri-sociali-italiani-morti",
+     "title": "I CENTRI SOCIALI ITALIANI SONO MORTI. QUALCUNO AVREBBE DOVUTO DIRLO.",
+     "desc": "Dal G8 di Genova a Macao, dal Leoncavallo al Tempio del Futuro Perduto: cosa resta oggi del movimento che per trent'anni ha rappresentato la resistenza politica e culturale italiana.",
+     "category": "society", "author": "Ada Scielbi", "date": date(2026, 7, 31),
+     "href": "articles/society-centri-sociali-italiani-morti.html",
+     "image": "articles/centri-sociali-1-dinosauri-zerocalcare.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
