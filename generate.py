@@ -207,6 +207,13 @@ REAL_ARTICLES = [
      "href": "articles/ideas-sinistra-reel-caroselli.html",
      "image": "articles/sinistra-reel-1-copertina-ai.png",
      "avatar": "articles/thomas-anderson.jpg"},
+    {"slug": "cities-sicurezza-milano-meme-elettorale",
+     "title": "I PROBLEMI DI SICUREZZA DI MILANO NON SONO UN MEME ELETTORALE. E FORSE STIAMO GUARDANDO NELLA DIREZIONE SBAGLIATA.",
+     "desc": "Tra Ministero dell'Interno, Prefetto, Comune e Commissione Sicurezza: chi ha davvero la responsabilità della sicurezza urbana a Milano, oltre lo slogan social contro il sindaco.",
+     "category": "cities", "author": "Thomas Anderson", "date": date(2026, 8, 3),
+     "href": "articles/cities-sicurezza-milano-meme-elettorale.html",
+     "image": "articles/sicurezza-milano-4-tensione-milanoinmovimento.jpg",
+     "avatar": "articles/thomas-anderson.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
