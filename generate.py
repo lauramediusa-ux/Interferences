@@ -193,7 +193,7 @@ REAL_ARTICLES = [
      "desc": "Dal G8 di Genova a Macao, dal Leoncavallo al Tempio del Futuro Perduto: cosa resta oggi del movimento che per trent'anni ha rappresentato la resistenza politica e culturale italiana.",
      "category": "society", "author": "Ada Scielbi", "date": date(2026, 7, 31),
      "href": "articles/society-centri-sociali-italiani-morti.html",
-     "image": "articles/centri-sociali-1-dinosauri-zerocalcare.jpg"},
+     "image": "articles/centri-sociali-2-sardone-macao.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
