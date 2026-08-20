@@ -194,6 +194,12 @@ REAL_ARTICLES = [
      "category": "society", "author": "Ada Scielbi", "date": date(2026, 7, 31),
      "href": "articles/society-centri-sociali-italiani-morti.html",
      "image": "articles/centri-sociali-2-sardone-macao.jpg"},
+    {"slug": "music-italo-ghetto",
+     "title": "SULLA TECHNO ORA SI CANTA IN ITALIANO. È UN NUOVO GENERE: SI CHIAMA ITALO GHETTO.",
+     "desc": "Dopo quarant'anni di nostalgia e importazione di suoni stranieri, una nuova scena prova a costruire un linguaggio techno interamente italiano: dialetti, cantautorato, cultura rave e immaginario popolare dentro il dancefloor.",
+     "category": "music", "author": "Anna Maria Rita dall'Ongaro", "date": date(2026, 8, 1),
+     "href": "articles/music-italo-ghetto.html",
+     "image": "articles/italo-ghetto-2-not-just-disco.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
