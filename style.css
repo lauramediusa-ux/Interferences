@@ -345,8 +345,9 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
-  color: var(--grey-1);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--grey-2);
 }
 
 .card-avatar {
