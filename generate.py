@@ -214,6 +214,12 @@ REAL_ARTICLES = [
      "category": "music", "author": "Anna Maria Rita dall'Ongaro", "date": date(2026, 8, 4),
      "href": "articles/music-oriental-techno-club-intervista.html",
      "image": "articles/otc-1-muro-nuta-sokol.jpg"},
+    {"slug": "music-dolce-potente-intervista",
+     "title": "DALLA PUGLIA, DA SOLA, IN AUTOBUS, INSEGUENDO UN SOGNO: INTERVISTA A DOLCE POTENTE",
+     "desc": "Partendo dai quartieri popolari di Bari per arrivare ai recenti tour in Cina, in Europa e in Italia. Dolce Potente è ogni giorno di più un punto di riferimento per la nuova scena techno italiana.",
+     "category": "music", "author": "Thomas Anderson", "date": date(2026, 8, 5),
+     "href": "articles/music-dolce-potente-intervista.html",
+     "image": "articles/dolce-potente-5-shanghai-2025.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
