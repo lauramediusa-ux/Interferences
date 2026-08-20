@@ -159,8 +159,7 @@ REAL_ARTICLES = [
      "desc": "La guerra invisibile per il controllo della cultura.",
      "category": "ideas", "author": "Thomas Anderson", "date": date(2026, 7, 20),
      "href": "articles/ideas-demoralizzazione-arma-di-guerra.html",
-     "image": "articles/demoralizzazione-italia-1963.jpg",
-     "avatar": "articles/thomas-anderson.jpg"},
+     "image": "articles/demoralizzazione-italia-1963.jpg"},
     {"slug": "society-tempio-futuro-perduto",
      "title": "LA RIVOLUZIONE DEL CLUBBING ITALIANO: IL TEMPIO DI MILANO",
      "desc": "Come un'ex officina tranviaria abbandonata è diventata una delle comunità culturali indipendenti più estese d'Italia.",
@@ -172,8 +171,7 @@ REAL_ARTICLES = [
      "desc": "L'Italia musicale del 2026 sembra un gigantesco talent permanente per persone che odiano la musica.",
      "category": "society", "author": "Thomas Anderson", "date": date(2026, 7, 28),
      "href": "articles/society-musica-finta-scena-italiana.html",
-     "image": "articles/musica-2026-delia.jpg",
-     "avatar": "articles/thomas-anderson.jpg"},
+     "image": "articles/musica-2026-delia.jpg"},
     {"slug": "ideas-forza-carattere-estetica",
      "title": "LA FORZA DEL CARATTERE HA LASCIATO POSTO ALL'ESTETICA",
      "desc": "Una civiltà che sostituisce la costruzione del carattere con la costruzione dell'immagine, produce individui dipendenti dalla validazione esterna.",
@@ -355,7 +353,6 @@ CARD_TPL = '''  <a class="card" data-cat="{category}" href="{href}">
       <h2 class="card-title">{title}</h2>
       <p class="card-desc">{desc}</p>
       <div class="card-meta">
-        <span class="card-avatar"><img src="{avatar}" alt=""></span>
         {author}
       </div>
     </div>
@@ -455,12 +452,11 @@ for n, page_articles in enumerate(pages, start=1):
     cards = ""
     for a in page_articles:
         image = a.get("image", "https://picsum.photos/seed/{}/900/700".format(a["slug"]))
-        avatar = a.get("avatar", "https://i.pravatar.cc/64?u={}".format(slugify(a["author"])))
         cards += CARD_TPL.format(
             category=a["category"], href=a.get("href", ARTICLE_HREF), image=image,
             slug=a["slug"], title=a["title"], catlabel=CATLABEL[a["category"]],
             display_date=fmt_date(a["date"]), desc=a["desc"],
-            author=a["author"], avatar=avatar,
+            author=a["author"],
         )
     html = PAGE_TPL.format(
         page_suffix="" if n == 1 else " — Pagina {}".format(n),
