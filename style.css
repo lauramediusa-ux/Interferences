@@ -9,12 +9,14 @@
   --color-cities: #FFC2E8;
   --color-society: #C2FFC6;
   --color-ideas: #C2B9FF;
+  --color-interviews: #FFC2D6;
 
   /* Saturated variants (homepage badges/pills + article quote accents) */
   --accent-music: #D9FF00;
   --accent-cities: #9485FF;
   --accent-society: #2AFF8A;
   --accent-ideas: #FF7300;
+  --accent-interviews: #FF2D95;
 
   --black: #111111;
   --white: #FFFFFF;
@@ -139,6 +141,7 @@ img { max-width: 100%; display: block; }
 .filter-pill[data-cat="cities"] { background: var(--accent-cities); }
 .filter-pill[data-cat="society"] { background: var(--accent-society); }
 .filter-pill[data-cat="ideas"] { background: var(--accent-ideas); }
+.filter-pill[data-cat="interviews"] { background: var(--accent-interviews); }
 
 /* Distraction-free toggle (distinct from category pills) */
 
@@ -313,6 +316,7 @@ img { max-width: 100%; display: block; }
 .card[data-cat="cities"] .card-category { background: var(--accent-cities); }
 .card[data-cat="society"] .card-category { background: var(--accent-society); }
 .card[data-cat="ideas"] .card-category { background: var(--accent-ideas); }
+.card[data-cat="interviews"] .card-category { background: var(--accent-interviews); }
 
 .card-date {
   display: block;
@@ -521,6 +525,7 @@ body.distraction-free .article-quote {
 .article-category.cities { background: var(--accent-cities); }
 .article-category.society { background: var(--accent-society); }
 .article-category.ideas { background: var(--accent-ideas); }
+.article-category.interviews { background: var(--accent-interviews); }
 
 .article-title {
   font-size: 46px;
@@ -804,6 +809,7 @@ body.distraction-free .article-preface {
 .related-category.cities { background: var(--accent-cities); }
 .related-category.society { background: var(--accent-society); }
 .related-category.ideas { background: var(--accent-ideas); }
+.related-category.interviews { background: var(--accent-interviews); }
 
 .related-card-title {
   font-size: 18px;

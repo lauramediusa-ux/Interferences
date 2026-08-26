@@ -7,9 +7,9 @@ MONTHS = ["", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
 
 ACCENT = {
     "music": "#B0C400", "cities": "#E6008A",
-    "society": "#34A853", "ideas": "#6C4FE0",
+    "society": "#34A853", "ideas": "#6C4FE0", "interviews": "#FF2D95",
 }
-CATLABEL = {"music": "Music", "cities": "Cities", "society": "Society", "ideas": "Ideas"}
+CATLABEL = {"music": "Music", "cities": "Cities", "society": "Society", "ideas": "Ideas", "interviews": "Interviews"}
 
 AUTHORS = {
     "music": ["Chiara Ferretti", "Nadia Colombo", "Yusuf Demir"],
@@ -208,17 +208,17 @@ REAL_ARTICLES = [
      "category": "cities", "author": "Vincenzina da Porta Venezia", "date": date(2026, 8, 3),
      "href": "articles/cities-sicurezza-milano-meme-elettorale.html",
      "image": "articles/sicurezza-milano-4-tensione-milanoinmovimento.jpg"},
-    {"slug": "music-oriental-techno-club-intervista",
+    {"slug": "interviews-oriental-techno-club-intervista",
      "title": "IL PRIMO CLUB ELETTRONICO 100% ASIATICO IN EUROPA: ORIENTAL TECHNO CLUB A MILANO",
      "desc": "Intervista al collettivo che ha trasformato la cultura elettronica asiatica in un ponte reale tra Asia ed Europa, tra musica, arti visive, performance e ritualità.",
-     "category": "music", "author": "Anna Maria Rita dall'Ongaro", "date": date(2026, 8, 4),
-     "href": "articles/music-oriental-techno-club-intervista.html",
+     "category": "interviews", "author": "Anna Maria Rita dall'Ongaro", "date": date(2026, 8, 4),
+     "href": "articles/interviews-oriental-techno-club-intervista.html",
      "image": "articles/otc-1-muro-nuta-sokol.jpg"},
-    {"slug": "music-dolce-potente-intervista",
+    {"slug": "interviews-dolce-potente-intervista",
      "title": "DALLA PUGLIA, DA SOLA, IN AUTOBUS, INSEGUENDO UN SOGNO: INTERVISTA A DOLCE POTENTE",
      "desc": "Partendo dai quartieri popolari di Bari per arrivare ai recenti tour in Cina, in Europa e in Italia. Dolce Potente è ogni giorno di più un punto di riferimento per la nuova scena techno italiana.",
-     "category": "music", "author": "Thomas Anderson", "date": date(2026, 8, 5),
-     "href": "articles/music-dolce-potente-intervista.html",
+     "category": "interviews", "author": "Thomas Anderson", "date": date(2026, 8, 5),
+     "href": "articles/interviews-dolce-potente-intervista.html",
      "image": "articles/dolce-potente-5-shanghai-2025.jpg"},
     {"slug": "ideas-festival-lunapark-territorio",
      "title": "FESTIVAL MODERNI, LUNAPARK IN DECLINO O RISORSE PER IL TERRITORIO?",
@@ -226,6 +226,12 @@ REAL_ARTICLES = [
      "category": "ideas", "author": "Francis Tutti", "date": date(2026, 8, 6),
      "href": "articles/ideas-festival-lunapark-territorio.html",
      "image": "articles/festival-territorio-1-persone-riunite.jpg"},
+    {"slug": "interviews-elisa-bee-intervista",
+     "title": "DALLA SARDEGNA AL BERGHAIN, PASSANDO PER IL TEMPIO: INTERVISTA A ELISA BEE",
+     "desc": "Dalle prime serate in Sardegna ai dancefloor più prestigiosi d'Europa, fino al percorso artistico e umano che l'ha portata a diventare una delle figure più riconoscibili della nuova scena techno europea.",
+     "category": "interviews", "author": "Mattia Losy", "date": date(2026, 8, 7),
+     "href": "articles/interviews-elisa-bee-intervista.html",
+     "image": "articles/elisa-bee-1-cimitero-monumentale.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
@@ -437,6 +443,7 @@ PAGE_TPL = '''<!DOCTYPE html>
   <button class="filter-pill" data-cat="cities">Cities</button>
   <button class="filter-pill" data-cat="society">Society</button>
   <button class="filter-pill" data-cat="ideas">Ideas</button>
+  <button class="filter-pill" data-cat="interviews">Interviews</button>
   <button class="filter-pill dfree-toggle" id="dfree-toggle">distraction free</button>
 </nav>
 
