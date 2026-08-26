@@ -220,6 +220,12 @@ REAL_ARTICLES = [
      "category": "music", "author": "Thomas Anderson", "date": date(2026, 8, 5),
      "href": "articles/music-dolce-potente-intervista.html",
      "image": "articles/dolce-potente-5-shanghai-2025.jpg"},
+    {"slug": "music-festival-lunapark-territorio",
+     "title": "FESTIVAL MODERNI, LUNAPARK IN DECLINO O RISORSE PER IL TERRITORIO?",
+     "desc": "Una riflessione sulla proprietà dei grandi festival musicali europei, lo sfruttamento del territorio che li ospita e il provincialismo culturale italiano.",
+     "category": "music", "author": "Francis Tutti", "date": date(2026, 8, 6),
+     "href": "articles/music-festival-lunapark-territorio.html",
+     "image": "articles/festival-territorio-1-persone-riunite.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
