@@ -232,6 +232,12 @@ REAL_ARTICLES = [
      "category": "interviews", "author": "Mattia Losy", "date": date(2026, 8, 7),
      "href": "articles/interviews-elisa-bee-intervista.html",
      "image": "articles/elisa-bee-1-cimitero-monumentale.jpg"},
+    {"slug": "ideas-discoteche-non-fanno-club-culture",
+     "title": "LE DISCOTECHE COMMERCIALI NON FANNO CLUB CULTURE",
+     "desc": "La crisi delle grandi discoteche commerciali non è un fenomeno passeggero, ma il sintomo dell'esaurimento di un modello economico e culturale che oggi tenta di rigenerarsi appropriandosi del clubbing, della techno e dell'hard techno.",
+     "category": "ideas", "author": "Francesca Mondragone", "date": date(2026, 8, 8),
+     "href": "articles/ideas-discoteche-non-fanno-club-culture.html",
+     "image": "articles/discoteche-club-culture-1-bottiglie.jpg"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
