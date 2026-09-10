@@ -4,6 +4,25 @@
 
 var DFREE_KEY = 'interference-distraction-free';
 
+// --- Preloader: si nasconde quando la pagina (immagini incluse) è pronta,
+// con un tetto massimo di attesa per non bloccare la navigazione --------
+(function () {
+  function reveal() { document.body.classList.add('preloaded'); }
+  if (document.readyState === 'complete') {
+    reveal();
+  } else {
+    window.addEventListener('load', reveal);
+  }
+  setTimeout(reveal, 2500);
+})();
+
+// --- Selettore lingua: chiude il menu quando si clicca fuori --------------
+document.addEventListener('click', function (e) {
+  document.querySelectorAll('.lang-switcher[open]').forEach(function (d) {
+    if (!d.contains(e.target)) d.removeAttribute('open');
+  });
+});
+
 // --- Modalità distraction free (applicata su ogni pagina del sito) --------
 (function () {
   var enabled = localStorage.getItem(DFREE_KEY) === '1';

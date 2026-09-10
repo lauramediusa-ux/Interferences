@@ -386,54 +386,199 @@ CARD_TPL = '''  <a class="card" data-cat="{category}" href="{href}">
 def page_filename(n):
     return "index.html" if n == 1 else "page-{}.html".format(n)
 
-def pagination_nav(current):
+# ---------------------------------------------------------------------------
+# Multi-language support (IT default at site root, EN/ZH/RU mirrored in
+# their own subfolders). Article bodies stay Italian-only for now — the
+# language switcher on every page links through to each language's
+# homepage; homepage cards themselves show translated title/desc.
+# ---------------------------------------------------------------------------
+
+LANGS = ["it", "en", "zh", "ru"]
+LANG_LABEL = {"it": "IT", "en": "EN", "zh": "中文", "ru": "RU"}
+LANG_NAME = {"it": "Italiano", "en": "English", "zh": "中文", "ru": "Русский"}
+
+UI_STRINGS = {
+    "it": {"see_all": "Vedi tutti", "dfree": "distraction free",
+           "footer": "Musica — Città — Società — Idee", "prev": "← Precedente", "next": "Successivo →",
+           "page_note": " — Pagina {} di {}", "meta_desc": "INTERFERENCES è una piattaforma media internazionale dedicata alle culture indipendenti: musica, controculture, rigenerazione urbana, arte, filosofia, politica culturale, comunità, festival, architettura sociale e nuovi movimenti."},
+    "en": {"see_all": "See all", "dfree": "distraction free",
+           "footer": "Music — Cities — Society — Ideas", "prev": "← Previous", "next": "Next →",
+           "page_note": " — Page {} of {}", "meta_desc": "INTERFERENCES is an international media platform dedicated to independent culture: music, counterculture, urban regeneration, art, philosophy, cultural politics, community, festivals, social architecture and new movements."},
+    "zh": {"see_all": "查看全部", "dfree": "distraction free",
+           "footer": "音乐 — 城市 — 社会 — 思想", "prev": "← 上一页", "next": "下一页 →",
+           "page_note": " — 第 {} / {} 页", "meta_desc": "INTERFERENCES 是一个致力于独立文化的国际媒体平台:音乐、反文化、城市更新、艺术、哲学、文化政治、社区、艺术节、社会建筑与新兴运动。"},
+    "ru": {"see_all": "Показать все", "dfree": "distraction free",
+           "footer": "Музыка — Города — Общество — Идеи", "prev": "← Назад", "next": "Далее →",
+           "page_note": " — Страница {} из {}", "meta_desc": "INTERFERENCES — международная медиаплатформа, посвящённая независимой культуре: музыка, контркультура, регенерация городов, искусство, философия, культурная политика, сообщества, фестивали, социальная архитектура и новые движения."},
+}
+
+MONTHS_EN = ["", "January", "February", "March", "April", "May", "June",
+             "July", "August", "September", "October", "November", "December"]
+MONTHS_RU_GEN = ["", "января", "февраля", "марта", "апреля", "мая", "июня",
+                 "июля", "августа", "сентября", "октября", "ноября", "декабря"]
+
+def fmt_date_lang(d, lang):
+    if lang == "en":
+        return "{} {}, {}".format(MONTHS_EN[d.month], d.day, d.year)
+    if lang == "zh":
+        return "{}年{}月{}日".format(d.year, d.month, d.day)
+    if lang == "ru":
+        return "{} {} {}".format(d.day, MONTHS_RU_GEN[d.month], d.year)
+    return fmt_date(d)
+
+# Translated card title/desc per article slug. Falls back to the Italian
+# REAL_ARTICLES copy for any language/slug not listed here yet.
+TRANSLATIONS = {
+    "ideas-demoralizzazione-arma-di-guerra": {
+        "en": {"title": "DEMORALIZATION AS A WEAPON OF WAR", "desc": "The invisible war for the control of culture."},
+        "zh": {"title": "士气瓦解:一种战争武器", "desc": "一场争夺文化控制权的无形战争。"},
+        "ru": {"title": "ДЕМОРАЛИЗАЦИЯ КАК ОРУЖИЕ ВОЙНЫ", "desc": "Невидимая война за контроль над культурой."},
+    },
+    "society-tempio-futuro-perduto": {
+        "en": {"title": "THE REVOLUTION OF ITALIAN CLUBBING: IL TEMPIO IN MILAN", "desc": "How an abandoned tram depot became one of Italy's largest independent cultural communities."},
+        "zh": {"title": "意大利俱乐部文化的革命:米兰的Tempio", "desc": "一座废弃的有轨电车车库,如何变成意大利最大的独立文化社区之一。"},
+        "ru": {"title": "РЕВОЛЮЦИЯ ИТАЛЬЯНСКОГО КЛАББИНГА: TEMPIO В МИЛАНЕ", "desc": "Как заброшенное трамвайное депо стало одним из крупнейших независимых культурных сообществ Италии."},
+    },
+    "society-musica-finta-scena-italiana": {
+        "en": {"title": "AI-MADE MUSIC IS AS FAKE AS TODAY'S ITALIAN SCENE", "desc": "Italy's 2026 music scene looks like one giant permanent talent show for people who hate music."},
+        "zh": {"title": "AI制作的音乐和今天的意大利乐坛一样虚假", "desc": "2026年的意大利音乐界,像一场为讨厌音乐的人举办的永久选秀。"},
+        "ru": {"title": "МУЗЫКА, СОЗДАННАЯ ИИ, ТАКАЯ ЖЕ ФАЛЬШИВАЯ, КАК И СЕГОДНЯШНЯЯ ИТАЛЬЯНСКАЯ СЦЕНА", "desc": "Музыкальная Италия 2026 года напоминает гигантское неиссякаемое шоу талантов для людей, ненавидящих музыку."},
+    },
+    "ideas-forza-carattere-estetica": {
+        "en": {"title": "STRENGTH OF CHARACTER HAS GIVEN WAY TO AESTHETICS", "desc": "A civilization that replaces character-building with image-building produces individuals dependent on external validation."},
+        "zh": {"title": "性格的力量已让位于美学", "desc": "一个用塑造形象取代塑造性格的文明,只会制造出依赖外部认可的个体。"},
+        "ru": {"title": "СИЛА ХАРАКТЕРА УСТУПИЛА МЕСТО ЭСТЕТИКЕ", "desc": "Цивилизация, заменяющая воспитание характера конструированием образа, порождает людей, зависимых от внешнего одобрения."},
+    },
+    "music-scuola-della-techno": {
+        "en": {"title": "THE WORLD'S FIRST TECHNO SCHOOL IS IN ITALY", "desc": "From Milan, a unique project: thousands of students, free classes, cultural research, workshops with international artists, and a radical idea that turns electronic music from mere entertainment into cultural heritage."},
+        "zh": {"title": "世界上第一所科技舞曲学校诞生在意大利", "desc": "来自米兰的独特项目:数千名学生、免费课程、文化研究、国际艺术家工作坊,以及一个将电子音乐从单纯娱乐转变为文化遗产的激进理念。"},
+        "ru": {"title": "ПЕРВАЯ В МИРЕ ШКОЛА ТЕХНО НАХОДИТСЯ В ИТАЛИИ", "desc": "Уникальный проект из Милана: тысячи студентов, бесплатные занятия, культурные исследования, мастер-классы с международными артистами и радикальная идея, превращающая электронную музыку из развлечения в культурное наследие."},
+    },
+    "society-centri-sociali-italiani-morti": {
+        "en": {"title": "ITALY'S SOCIAL CENTERS ARE DEAD. SOMEONE SHOULD HAVE SAID SO.", "desc": "From the Genoa G8 to Macao, from Leoncavallo to Tempio del Futuro Perduto: what's left today of the movement that for thirty years embodied Italian political and cultural resistance."},
+        "zh": {"title": "意大利的社会中心已经死了。总得有人说出来。", "desc": "从热那亚G8峰会到Macao,从Leoncavallo到Tempio del Futuro Perduto:这场代表了意大利三十年政治文化抵抗运动的现状如何?"},
+        "ru": {"title": "ИТАЛЬЯНСКИЕ СОЦИАЛЬНЫЕ ЦЕНТРЫ МЕРТВЫ. КТО-ТО ДОЛЖЕН БЫЛ ЭТО СКАЗАТЬ.", "desc": "От генуэзской G8 до Macao, от Leoncavallo до Tempio del Futuro Perduto: что осталось от движения, тридцать лет представлявшего итальянское политическое и культурное сопротивление."},
+    },
+    "music-italo-ghetto": {
+        "en": {"title": "TECHNO IS NOW SUNG IN ITALIAN. IT'S A NEW GENRE CALLED ITALO GHETTO.", "desc": "After forty years of nostalgia and imported foreign sounds, a new scene tries to build an entirely Italian techno language: dialects, singer-songwriting, rave culture and popular imagery on the dancefloor."},
+        "zh": {"title": "如今科技舞曲开始用意大利语演唱。这是一个新流派,名为Italo Ghetto。", "desc": "在四十年的怀旧与外来声音输入之后,一股新浪潮正尝试构建完全意大利化的科技舞曲语言:方言、创作歌曲、锐舞文化与大众意象在舞池中交融。"},
+        "ru": {"title": "ТЕХНО ТЕПЕРЬ ПОЮТ НА ИТАЛЬЯНСКОМ. ЭТО НОВЫЙ ЖАНР — ITALO GHETTO.", "desc": "После сорока лет ностальгии и заимствованных иностранных звуков новая сцена пытается создать полностью итальянский техно-язык: диалекты, авторская песня, рейв-культура и народные образы на танцполе."},
+    },
+    "ideas-sinistra-reel-caroselli": {
+        "en": {"title": "THE LEFT USED TO BE THE PEOPLE OF BOOKS AND MILITANCY. TODAY IT'S THE AUDIENCE OF REELS AND CAROUSELS.", "desc": "From magazines to podcasts, from social-media lawyers to activist-brands: the left has replaced political thought with reassuring content, serial outrage and individual careers perfectly integrated into the establishment."},
+        "zh": {"title": "左翼曾是书籍与行动的信奉者。如今却成了Reels和轮播广告的观众。", "desc": "从杂志到播客,从社交媒体律师到活动家品牌:左翼用令人安心的内容、连续不断的愤慨和完全融入建制的个人事业,取代了政治思想。"},
+        "ru": {"title": "ЛЕВЫЕ БЫЛИ НАРОДОМ КНИГ И БОРЬБЫ. СЕГОДНЯ ОНИ — АУДИТОРИЯ РИЛСОВ И КАРУСЕЛЕЙ.", "desc": "От журналов до подкастов, от юристов в соцсетях до брендов-активистов: левые заменили политическую мысль успокаивающим контентом, серийным возмущением и личными карьерами, идеально встроенными в истеблишмент."},
+    },
+    "cities-sicurezza-milano-meme-elettorale": {
+        "en": {"title": "MILAN'S SECURITY PROBLEMS AREN'T AN ELECTION MEME. AND MAYBE WE'RE LOOKING IN THE WRONG DIRECTION.", "desc": "Between the Interior Ministry, the Prefect, the City Council and the Security Commission: who actually bears responsibility for urban security in Milan, beyond the social-media slogan against the mayor."},
+        "zh": {"title": "米兰的治安问题不是竞选段子。或许我们一直看错了方向。", "desc": "在内政部、省长、市政府和治安委员会之间:除了针对市长的社交媒体口号,谁才真正对米兰的城市安全负责?"},
+        "ru": {"title": "ПРОБЛЕМЫ БЕЗОПАСНОСТИ МИЛАНА — НЕ ПРЕДВЫБОРНЫЙ МЕМ. И, ВОЗМОЖНО, МЫ СМОТРИМ НЕ В ТУ СТОРОНУ.", "desc": "Между МВД, префектом, мэрией и комиссией по безопасности: кто на самом деле отвечает за городскую безопасность в Милане, помимо лозунга в соцсетях против мэра."},
+    },
+    "interviews-oriental-techno-club-intervista": {
+        "en": {"title": "EUROPE'S FIRST 100% ASIAN ELECTRONIC CLUB: ORIENTAL TECHNO CLUB IN MILAN", "desc": "An interview with the collective that turned Asian electronic culture into a real bridge between Asia and Europe, through music, visual arts, performance and ritual."},
+        "zh": {"title": "欧洲第一家100%亚洲风格电子俱乐部:米兰Oriental Techno Club", "desc": "专访这个团体,他们通过音乐、视觉艺术、表演与仪式,将亚洲电子文化变成连接亚洲与欧洲的真实桥梁。"},
+        "ru": {"title": "ПЕРВЫЙ В ЕВРОПЕ ЭЛЕКТРОННЫЙ КЛУБ НА 100% АЗИАТСКИЙ: ORIENTAL TECHNO CLUB В МИЛАНЕ", "desc": "Интервью с коллективом, превратившим азиатскую электронную культуру в настоящий мост между Азией и Европой через музыку, визуальное искусство, перформанс и ритуал."},
+    },
+    "interviews-dolce-potente-intervista": {
+        "en": {"title": "FROM PUGLIA, ALONE, BY BUS, CHASING A DREAM: AN INTERVIEW WITH DOLCE POTENTE", "desc": "Starting from the working-class neighborhoods of Bari to recent tours in China, Europe and Italy. Dolce Potente is becoming, day by day, a reference point for Italy's new techno scene."},
+        "zh": {"title": "独自一人,从普利亚出发,乘大巴追逐梦想:专访Dolce Potente", "desc": "从巴里的平民社区起步,到近期的中国、欧洲和意大利巡演。Dolce Potente正日益成为意大利新一代科技舞曲的标杆人物。"},
+        "ru": {"title": "ИЗ ПУЛЬИ, В ОДИНОЧКУ, НА АВТОБУСЕ, В ПОГОНЕ ЗА МЕЧТОЙ: ИНТЕРВЬЮ С DOLCE POTENTE", "desc": "От рабочих кварталов Бари до недавних туров по Китаю, Европе и Италии. Dolce Potente день ото дня становится ориентиром для новой итальянской техно-сцены."},
+    },
+    "ideas-festival-lunapark-territorio": {
+        "en": {"title": "MODERN FESTIVALS: A DECLINING FUNFAIR, OR A RESOURCE FOR THE LAND?", "desc": "A reflection on the ownership of Europe's major music festivals, the exploitation of the territories that host them, and Italian cultural provincialism."},
+        "zh": {"title": "现代音乐节:衰落的游乐场,还是地方的资源?", "desc": "对欧洲大型音乐节所有权、主办地遭受的剥削,以及意大利文化地方主义的反思。"},
+        "ru": {"title": "СОВРЕМЕННЫЕ ФЕСТИВАЛИ: УГАСАЮЩИЙ ЛУНА-ПАРК ИЛИ РЕСУРС ДЛЯ ТЕРРИТОРИИ?", "desc": "Размышление о собственности крупных европейских музыкальных фестивалей, эксплуатации принимающих их территорий и итальянском культурном провинциализме."},
+    },
+    "interviews-elisa-bee-intervista": {
+        "en": {"title": "FROM SARDINIA TO BERGHAIN, VIA IL TEMPIO: AN INTERVIEW WITH ELISA BEE", "desc": "From her first nights out in Sardinia to Europe's most prestigious dancefloors, the artistic and personal journey that made her one of the most recognizable figures in Europe's new techno scene."},
+        "zh": {"title": "从撒丁岛到Berghain,途经Tempio:专访Elisa Bee", "desc": "从在撒丁岛的最初夜晚,到欧洲最负盛名的舞池,这段艺术与人生之旅让她成为欧洲新一代科技舞曲最具辨识度的人物之一。"},
+        "ru": {"title": "ИЗ САРДИНИИ В BERGHAIN, ЧЕРЕЗ TEMPIO: ИНТЕРВЬЮ С ELISA BEE", "desc": "От первых вечеринок на Сардинии до самых престижных танцполов Европы — творческий и человеческий путь, сделавший её одной из самых узнаваемых фигур новой европейской техно-сцены."},
+    },
+    "ideas-discoteche-non-fanno-club-culture": {
+        "en": {"title": "COMMERCIAL DISCOS DON'T MAKE CLUB CULTURE", "desc": "The crisis of the big commercial discos isn't a passing phase, but the symptom of an economic and cultural model running out of steam, now trying to regenerate itself by appropriating clubbing, techno and hard techno."},
+        "zh": {"title": "商业迪厅制造不出俱乐部文化", "desc": "大型商业迪厅的危机并非一时现象,而是一种经济与文化模式走向枯竭的征兆——如今它试图通过挪用俱乐部文化、科技舞曲和硬核科技舞曲来重获新生。"},
+        "ru": {"title": "КОММЕРЧЕСКИЕ ДИСКОТЕКИ НЕ СОЗДАЮТ КЛАБ-КУЛЬТУРУ", "desc": "Кризис крупных коммерческих дискотек — не временное явление, а симптом истощения экономической и культурной модели, которая сегодня пытается возродиться, присваивая клаббинг, техно и хард-техно."},
+    },
+}
+
+def loc(path, lang):
+    """Prefix an asset/article path with the extra '../' needed when the
+    page being generated lives inside a /en /zh /ru subfolder."""
+    return path if lang == "it" else "../" + path
+
+def lang_link(current_lang, target_lang, page_fn):
+    if current_lang == target_lang:
+        return page_fn
+    prefix = "" if current_lang == "it" else "../"
+    if target_lang == "it":
+        return prefix + page_fn
+    return prefix + target_lang + "/" + page_fn
+
+def lang_switcher_html(current_lang, page_fn):
+    items = ""
+    for L in LANGS:
+        cls = ' class="active"' if L == current_lang else ""
+        items += '      <a href="{}"{}>{}</a>\n'.format(lang_link(current_lang, L, page_fn), cls, LANG_NAME[L])
+    return ('    <details class="lang-switcher">\n'
+            '      <summary>{}</summary>\n'
+            '      <div class="lang-menu">\n{}      </div>\n'
+            '    </details>').format(LANG_LABEL[current_lang], items)
+
+PRELOADER = ('<div id="site-preloader" aria-hidden="true">\n'
+             '  <div class="preloader-word">INTERFERENCES</div>\n'
+             '  <div class="preloader-bar"><span></span></div>\n'
+             '</div>\n')
+
+def pagination_nav(current, lang):
     if n_pages <= 1:
         return ""
+    s = UI_STRINGS[lang]
     items = []
     if current > 1:
-        items.append('<a class="page-btn" href="{}">← Precedente</a>'.format(page_filename(current - 1)))
+        items.append('<a class="page-btn" href="{}">{}</a>'.format(page_filename(current - 1), s["prev"]))
     else:
-        items.append('<span class="page-btn disabled">← Precedente</span>')
+        items.append('<span class="page-btn disabled">{}</span>'.format(s["prev"]))
     nums = []
     for n in range(1, n_pages + 1):
         cls = "page-num active" if n == current else "page-num"
         nums.append('<a class="{}" href="{}">{}</a>'.format(cls, page_filename(n), n))
     items.append('<div class="page-numbers">' + "".join(nums) + '</div>')
     if current < n_pages:
-        items.append('<a class="page-btn" href="{}">Successivo →</a>'.format(page_filename(current + 1)))
+        items.append('<a class="page-btn" href="{}">{}</a>'.format(page_filename(current + 1), s["next"]))
     else:
-        items.append('<span class="page-btn disabled">Successivo →</span>')
+        items.append('<span class="page-btn disabled">{}</span>'.format(s["next"]))
     return '<nav class="pagination">\n  ' + "\n  ".join(items) + '\n</nav>'
 
 PAGE_TPL = '''<!DOCTYPE html>
-<html lang="it">
+<html lang="{html_lang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>INTERFERENCES — Culture Indipendenti{page_suffix}</title>
-<meta name="description" content="INTERFERENCES è una piattaforma media internazionale dedicata alle culture indipendenti: musica, controculture, rigenerazione urbana, arte, filosofia, politica culturale, comunità, festival, architettura sociale e nuovi movimenti.">
+<meta name="description" content="{meta_desc}">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="INTERFERENCES">
 <meta property="og:title" content="INTERFERENCES — Culture Indipendenti">
-<meta property="og:description" content="Musica, controculture, rigenerazione urbana, arte, filosofia, politica culturale, comunità, festival, architettura sociale, nuovi movimenti.">
+<meta property="og:description" content="{meta_desc}">
 <meta property="og:image" content="https://www.interferencesmag.com/interference-cover.png">
 <meta property="og:url" content="https://www.interferencesmag.com/{page_url}">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="INTERFERENCES — Culture Indipendenti">
-<meta name="twitter:description" content="Musica, controculture, rigenerazione urbana, arte, filosofia, politica culturale, comunità, festival, architettura sociale, nuovi movimenti.">
+<meta name="twitter:description" content="{meta_desc}">
 <meta name="twitter:image" content="https://www.interferencesmag.com/interference-cover.png">
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="{asset}style.css">
 </head>
 <body>
 
+{preloader}
 <header class="site-header">
   <div class="wrap">
-    <div class="logo"><a href="/"><img src="logo.png" alt="INTERFERENCES"></a></div>
+    <div class="logo"><a href="/"><img src="{asset}logo.png" alt="INTERFERENCES"></a></div>
   </div>
   <div class="wrap tagline-row">
     <span>Culture Indipendenti</span>
@@ -444,13 +589,14 @@ PAGE_TPL = '''<!DOCTYPE html>
 </header>
 
 <nav class="filters">
-  <button class="filter-pill active" data-cat="all">See all</button>
+  <button class="filter-pill active" data-cat="all">{see_all}</button>
   <button class="filter-pill" data-cat="music">Music</button>
   <button class="filter-pill" data-cat="cities">Cities</button>
   <button class="filter-pill" data-cat="society">Society</button>
   <button class="filter-pill" data-cat="ideas">Ideas</button>
   <button class="filter-pill" data-cat="interviews">Interviews</button>
-  <button class="filter-pill dfree-toggle" id="dfree-toggle">distraction free</button>
+{lang_switcher}
+  <button class="filter-pill dfree-toggle" id="dfree-toggle">{dfree}</button>
 </nav>
 
 <main class="grid">
@@ -461,10 +607,10 @@ PAGE_TPL = '''<!DOCTYPE html>
 
 <footer class="site-footer">
   <div>© 2026 Interference Media</div>
-  <div>Musica — Città — Società — Idee{page_note}</div>
+  <div>{footer}{page_note}</div>
 </footer>
 
-<script src="script.js"></script>
+<script src="{asset}script.js"></script>
 </body>
 </html>
 '''
@@ -473,23 +619,45 @@ PAGE_TPL = '''<!DOCTYPE html>
 # until real editorial content is ready to replace it (see articles/template-articolo.html).
 ARTICLE_HREF = "articles/template-articolo.html"
 
-for n, page_articles in enumerate(pages, start=1):
-    cards = ""
-    for a in page_articles:
-        image = a.get("image", "https://picsum.photos/seed/{}/900/700".format(a["slug"]))
-        cards += CARD_TPL.format(
-            category=a["category"], href=a.get("href", ARTICLE_HREF), image=image,
-            slug=a["slug"], title=a["title"], catlabel=CATLABEL[a["category"]],
-            display_date=fmt_date(a["date"]), desc=a["desc"],
-            author=a["author"],
-        )
-    html = PAGE_TPL.format(
-        page_suffix="" if n == 1 else " — Pagina {}".format(n),
-        page_url="" if n == 1 else page_filename(n),
-        cards=cards, pagination=pagination_nav(n),
-        page_note="" if n_pages <= 1 else " — Pagina {} di {}".format(n, n_pages),
-    )
-    with open(page_filename(n), "w", encoding="utf-8") as f:
-        f.write(html)
+import os
 
-print("Generate {} pagine ({} articoli totali, {} per pagina)".format(n_pages, len(ALL), PER_PAGE))
+for lang in LANGS:
+    s = UI_STRINGS[lang]
+    outdir = "." if lang == "it" else lang
+    if lang != "it":
+        os.makedirs(outdir, exist_ok=True)
+
+    for n, page_articles in enumerate(pages, start=1):
+        cards = ""
+        for a in page_articles:
+            slug = a["slug"]
+            tr = TRANSLATIONS.get(slug, {}).get(lang, {})
+            title = tr.get("title", a["title"])
+            desc = tr.get("desc", a["desc"])
+            image = loc(a.get("image", "https://picsum.photos/seed/{}/900/700".format(slug)), lang) \
+                if not a.get("image", "").startswith("http") else a.get("image")
+            href = loc(a.get("href", ARTICLE_HREF), lang) if not a.get("href", "").startswith("http") else a.get("href", ARTICLE_HREF)
+            cards += CARD_TPL.format(
+                category=a["category"], href=href, image=image,
+                slug=slug, title=title, catlabel=CATLABEL[a["category"]],
+                display_date=fmt_date_lang(a["date"], lang), desc=desc,
+                author=a["author"],
+            )
+        page_fn = page_filename(n)
+        page_note = "" if n_pages <= 1 else s["page_note"].format(n, n_pages)
+        html = PAGE_TPL.format(
+            html_lang=lang,
+            page_suffix="" if n == 1 else " — {} {}".format("Pagina" if lang == "it" else "Page", n),
+            page_url=(page_fn if lang == "it" else lang + "/" + page_fn),
+            meta_desc=s["meta_desc"],
+            asset=("" if lang == "it" else "../"),
+            preloader=PRELOADER,
+            see_all=s["see_all"], dfree=s["dfree"],
+            lang_switcher=lang_switcher_html(lang, page_fn),
+            cards=cards, pagination=pagination_nav(n, lang),
+            footer=s["footer"], page_note=page_note,
+        )
+        with open(os.path.join(outdir, page_fn), "w", encoding="utf-8") as f:
+            f.write(html)
+
+print("Generate {} pagine x {} lingue ({} articoli totali, {} per pagina)".format(n_pages, len(LANGS), len(ALL), PER_PAGE))
