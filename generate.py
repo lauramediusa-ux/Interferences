@@ -7,7 +7,7 @@ MONTHS = ["", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
 
 ACCENT = {
     "music": "#B0C400", "cities": "#E6008A",
-    "society": "#34A853", "ideas": "#6C4FE0", "interviews": "#FF2D95",
+    "society": "#34A853", "ideas": "#6C4FE0", "interviews": "#FF96DE",
 }
 CATLABEL = {"music": "Music", "cities": "Cities", "society": "Society", "ideas": "Ideas", "interviews": "Interviews"}
 
