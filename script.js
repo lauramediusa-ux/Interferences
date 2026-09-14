@@ -5,15 +5,32 @@
 var DFREE_KEY = 'interference-distraction-free';
 
 // --- Preloader: si nasconde quando la pagina (immagini incluse) è pronta,
-// con un tetto massimo di attesa per non bloccare la navigazione --------
+// ma resta visibile almeno MIN_MS per essere percepibile anche sulle
+// connessioni veloci, con un tetto massimo di attesa (MAX_MS) per non
+// bloccare la navigazione sulle connessioni lente --------------------------
 (function () {
-  function reveal() { document.body.classList.add('preloaded'); }
-  if (document.readyState === 'complete') {
-    reveal();
-  } else {
-    window.addEventListener('load', reveal);
+  var MIN_MS = 900;
+  var MAX_MS = 2500;
+  var start = Date.now();
+  var revealed = false;
+
+  function reveal() {
+    if (revealed) return;
+    revealed = true;
+    document.body.classList.add('preloaded');
   }
-  setTimeout(reveal, 2500);
+  function revealAfterMin() {
+    var elapsed = Date.now() - start;
+    var wait = Math.max(0, MIN_MS - elapsed);
+    setTimeout(reveal, wait);
+  }
+
+  if (document.readyState === 'complete') {
+    revealAfterMin();
+  } else {
+    window.addEventListener('load', revealAfterMin);
+  }
+  setTimeout(reveal, MAX_MS);
 })();
 
 // --- Selettore lingua: chiude il menu quando si clicca fuori --------------
