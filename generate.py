@@ -634,9 +634,22 @@ for lang in LANGS:
             tr = TRANSLATIONS.get(slug, {}).get(lang, {})
             title = tr.get("title", a["title"])
             desc = tr.get("desc", a["desc"])
+            # Images always live in the shared root /articles/ folder (not
+            # duplicated per language), so they always need the loc() prefix.
             image = loc(a.get("image", "https://picsum.photos/seed/{}/900/700".format(slug)), lang) \
                 if not a.get("image", "").startswith("http") else a.get("image")
-            href = loc(a.get("href", ARTICLE_HREF), lang) if not a.get("href", "").startswith("http") else a.get("href", ARTICLE_HREF)
+            # Articles themselves DO have a per-language translated copy
+            # (en/articles/, zh/articles/, ru/articles/) once translated, so
+            # for lang != "it" the homepage card should link straight to
+            # that language's own copy rather than falling back to the
+            # Italian original via loc().
+            raw_href = a.get("href", ARTICLE_HREF)
+            if raw_href.startswith("http"):
+                href = raw_href
+            elif lang == "it":
+                href = raw_href
+            else:
+                href = raw_href  # e.g. "articles/{slug}.html" — already correct relative to lang subfolder
             cards += CARD_TPL.format(
                 category=a["category"], href=href, image=image,
                 slug=slug, title=title, catlabel=CATLABEL[a["category"]],
@@ -647,7 +660,7 @@ for lang in LANGS:
         page_note = "" if n_pages <= 1 else s["page_note"].format(n, n_pages)
         html = PAGE_TPL.format(
             html_lang=lang,
-            page_suffix="" if n == 1 else " — {} {}".format("Pagina" if lang == "it" else "Page", n),
+            page_suffix="" if n == 1 else " — " + s["page_note"].format(n, n_pages).lstrip(" —"),
             page_url=(page_fn if lang == "it" else lang + "/" + page_fn),
             meta_desc=s["meta_desc"],
             asset=("" if lang == "it" else "../"),
