@@ -286,38 +286,36 @@ img { max-width: 100%; display: block; }
 .lang-menu a:hover { background: var(--grey-4); }
 .lang-menu a.active { font-weight: 700; background: var(--grey-4); }
 
-/* mobile: category pills wrap onto as many lines as needed, each sized to
-   its own label (no more forced equal-width, which used to clip text like
-   "Society"/"Interviews"); distraction free stays full width on its own row */
+/* mobile: the 6 category pills share a single compact row (smaller font/
+   padding so every full label fits, no clipping); language switcher and
+   distraction-free then share the row below, side by side */
 @media (max-width: 640px) {
   .filters {
     flex-wrap: wrap;
-    row-gap: 10px;
-    gap: 8px;
+    row-gap: 8px;
+    column-gap: 3px;
+    gap: 3px;
   }
 
   .filter-pill:not(.dfree-toggle) {
-    flex: 0 1 auto;
-    min-width: 0;
-    padding: 6px 11px;
-    font-size: 10.5px;
-    text-align: center;
+    flex: 0 0 auto;
+    padding: 6px 5px;
+    font-size: 9px;
+    letter-spacing: 0;
     white-space: nowrap;
   }
 
   .lang-switcher summary {
-    padding: 6px 11px;
-    font-size: 10.5px;
+    padding: 6px 13px;
+    font-size: 11px;
   }
 
   .dfree-toggle {
-    order: 10;
-    flex-basis: 100%;
-    width: 100%;
+    flex: 1 1 auto;
     margin-left: 0;
     text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 }
 
