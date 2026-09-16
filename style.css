@@ -294,16 +294,17 @@ img { max-width: 100%; display: block; }
     flex-wrap: wrap;
     row-gap: 16px;
     column-gap: 3px;
-    gap: 3px;
-    justify-content: space-between;
   }
 
+  /* flex-grow (not extra gap) absorbs the leftover width, so pills stay
+     tightly spaced but the row still reaches the right margin exactly */
   .filter-pill:not(.dfree-toggle) {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     padding: 6px 5px;
     font-size: 9px;
     letter-spacing: 0;
     white-space: nowrap;
+    text-align: center;
   }
 
   .lang-switcher summary {
