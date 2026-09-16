@@ -312,6 +312,17 @@ img { max-width: 100%; display: block; }
     font-size: 11px;
   }
 
+  /* on the homepage nav specifically, the lang-switcher now sits at the far
+     LEFT of its row, so its dropdown must open to the right of the trigger
+     (left:0) instead of the right (right:0) — otherwise it opens off-screen
+     and is unclickable. Scoped to .filters only: on article pages the
+     lang-switcher still sits at the right of the header, where the default
+     right:0 (opening leftward) is the correct, on-screen behavior. */
+  .filters .lang-switcher .lang-menu {
+    left: 0;
+    right: auto;
+  }
+
   .dfree-toggle {
     flex: 1 1 auto;
     margin-left: 0;
