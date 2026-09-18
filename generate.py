@@ -238,6 +238,12 @@ REAL_ARTICLES = [
      "category": "ideas", "author": "Francesca Mondragone", "date": date(2026, 8, 8),
      "href": "articles/ideas-discoteche-non-fanno-club-culture.html",
      "image": "articles/discoteche-club-culture-1-bottiglie.jpg"},
+    {"slug": "interviews-urban-dancing-prophets-intervista",
+     "title": "LA DANZA POLITICA E TECHNO DI URBAN DANCING PROPHETS",
+     "desc": "Danza, techno e rituali notturni: dentro il lavoro del collettivo residente di Sala Nera al Tempio del Futuro Perduto, che usa il corpo come strumento di ricerca artistica, trasformazione sociale e costruzione di comunità.",
+     "category": "interviews", "author": "Mattia Losy", "date": date(2026, 9, 1),
+     "href": "articles/interviews-urban-dancing-prophets-intervista.html",
+     "image": "articles/udp-5-play-the-ground-berlino.png"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
@@ -498,6 +504,11 @@ TRANSLATIONS = {
         "en": {"title": "COMMERCIAL DISCOS DON'T MAKE CLUB CULTURE", "desc": "The crisis of the big commercial discos isn't a passing phase, but the symptom of an economic and cultural model running out of steam, now trying to regenerate itself by appropriating clubbing, techno and hard techno."},
         "zh": {"title": "商业迪厅制造不出俱乐部文化", "desc": "大型商业迪厅的危机并非一时现象,而是一种经济与文化模式走向枯竭的征兆——如今它试图通过挪用俱乐部文化、科技舞曲和硬核科技舞曲来重获新生。"},
         "ru": {"title": "КОММЕРЧЕСКИЕ ДИСКОТЕКИ НЕ СОЗДАЮТ КЛАБ-КУЛЬТУРУ", "desc": "Кризис крупных коммерческих дискотек — не временное явление, а симптом истощения экономической и культурной модели, которая сегодня пытается возродиться, присваивая клаббинг, техно и хард-техно."},
+    },
+    "interviews-urban-dancing-prophets-intervista": {
+        "en": {"title": "THE POLITICAL, TECHNO DANCE OF URBAN DANCING PROPHETS", "desc": "Dance, techno and nocturnal rituals: inside the work of the resident collective of Sala Nera at Tempio del Futuro Perduto, who use the body as a tool for artistic research, social transformation and community-building."},
+        "zh": {"title": "科技舞曲里的政治之舞:Urban Dancing Prophets", "desc": "舞蹈、科技舞曲与夜间仪式:探访米兰“失落未来神庙”(Tempio del Futuro Perduto)驻场演出团体Sala Nera的工作——他们将身体作为艺术探索、社会变革与社区建设的工具。"},
+        "ru": {"title": "ПОЛИТИЧЕСКИЙ ТЕХНО-ТАНЕЦ URBAN DANCING PROPHETS", "desc": "Танец, техно и ночные ритуалы: работа резидентного коллектива Sala Nera в Tempio del Futuro Perduto, использующего тело как инструмент художественного исследования, социальной трансформации и создания сообщества."},
     },
 }
 
