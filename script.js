@@ -111,6 +111,18 @@ var drawRowLines;
         if (!dup) ys.push(y);
       });
     });
+    // Closing line: bottom edge of the last row (each .card spans the full
+    // media+text subgrid tracks, so its own bottom edge equals the row's).
+    var maxBottom = 0;
+    grid.querySelectorAll('.card').forEach(function (c) {
+      if (c.offsetParent === null) return;
+      var b = c.getBoundingClientRect().bottom - overlayRect.top;
+      if (b > maxBottom) maxBottom = b;
+    });
+    if (maxBottom > 0) {
+      var dupBottom = ys.some(function (v) { return Math.abs(v - maxBottom) < 0.5; });
+      if (!dupBottom) ys.push(maxBottom);
+    }
     ys.forEach(function (y) {
       var line = document.createElement('div');
       line.className = 'row-line';
