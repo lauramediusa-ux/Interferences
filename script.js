@@ -139,7 +139,8 @@ function shareArticle(platform) {
     whatsapp: 'https://api.whatsapp.com/send?text=' + encodeURIComponent(title + ' — ' + url),
     telegram: 'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(title),
     facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url),
-    twitter: 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(title)
+    twitter: 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(title),
+    threads: 'https://www.threads.net/intent/post?text=' + encodeURIComponent(title + ' — ' + url)
   };
 
   if (platform === 'native' && navigator.share) {
