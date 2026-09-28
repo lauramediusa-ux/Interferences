@@ -244,6 +244,12 @@ REAL_ARTICLES = [
      "category": "interviews", "author": "Mattia Losy", "date": date(2026, 9, 1),
      "href": "articles/interviews-urban-dancing-prophets-intervista.html",
      "image": "articles/udp-5-play-the-ground-berlino.png"},
+    {"slug": "society-vignaioli-resistenti-tempio-di-bacco",
+     "title": "CONTRO IL VINO SENZ'ANIMA — CHI SONO I VIGNAIOLI RESISTENTI",
+     "desc": "Al Tempio di Bacco, la fiera dei vignaioli artigianali del Tempio del Futuro Perduto, il vino torna a essere una storia di persone, terra e resistenza al mercato che lo ha reso senz'anima.",
+     "category": "society", "author": "Thomas Anderson", "date": date(2026, 9, 2),
+     "href": "articles/society-vignaioli-resistenti-tempio-di-bacco.html",
+     "image": "articles/vignaioli-2-xfarm-agricoltura-prossima.png"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
@@ -510,6 +516,11 @@ TRANSLATIONS = {
         "en": {"title": "THE POLITICAL, TECHNO DANCE OF URBAN DANCING PROPHETS", "desc": "Dance, techno and nocturnal rituals: inside the work of the resident collective of Sala Nera at Tempio del Futuro Perduto, who use the body as a tool for artistic research, social transformation and community-building."},
         "zh": {"title": "科技舞曲里的政治之舞:Urban Dancing Prophets", "desc": "舞蹈、科技舞曲与夜间仪式:探访米兰“失落未来神庙”(Tempio del Futuro Perduto)驻场演出团体Sala Nera的工作——他们将身体作为艺术探索、社会变革与社区建设的工具。"},
         "ru": {"title": "ПОЛИТИЧЕСКИЙ ТЕХНО-ТАНЕЦ URBAN DANCING PROPHETS", "desc": "Танец, техно и ночные ритуалы: работа резидентного коллектива Sala Nera в Tempio del Futuro Perduto, использующего тело как инструмент художественного исследования, социальной трансформации и создания сообщества."},
+    },
+    "society-vignaioli-resistenti-tempio-di-bacco": {
+        "en": {"title": "AGAINST SOULLESS WINE — WHO ARE THE RESISTANT WINE-GROWERS", "desc": "At Tempio di Bacco, the artisanal wine-growers' fair hosted by Tempio del Futuro Perduto, wine becomes once again a story of people, land, and resistance to the market that stripped it of its soul."},
+        "zh": {"title": "反抗无灵魂的葡萄酒 — 谁是“坚守的酿酒人”", "desc": "在Tempio del Futuro Perduto主办的手工酿酒人集市Tempio di Bacco上,葡萄酒重新成为一个关于人、土地,以及对抗那个令其失去灵魂的市场的抵抗故事。"},
+        "ru": {"title": "ПРОТИВ БЕЗДУШНОГО ВИНА — КТО ТАКИЕ ВИНОГРАДАРИ СОПРОТИВЛЕНИЯ", "desc": "На Tempio di Bacco, ярмарке ремесленных виноградарей Tempio del Futuro Perduto, вино вновь становится историей людей, земли и сопротивления рынку, лишившему его души."},
     },
 }
 
