@@ -594,6 +594,8 @@ PAGE_TPL = '''<!DOCTYPE html>
 <meta name="twitter:description" content="{meta_desc}">
 <meta name="twitter:image" content="https://www.interferencesmag.com/interference-cover.png">
 
+<link rel="icon" type="image/png" href="{asset}interferences_favicon.png">
+<link rel="apple-touch-icon" href="{asset}interferences_favicon.png">
 <link rel="stylesheet" href="{asset}style.css">
 </head>
 <body>
