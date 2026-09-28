@@ -150,7 +150,9 @@ img { max-width: 100%; display: block; }
 .logo-small { width: min(260px, 60vw); }
 
 .header-row {
-  /* inherits .site-header .wrap flex layout: logo + tagline-slot side by side */
+  /* inherits .site-header .wrap flex layout: logo + tagline-slot side by side,
+     but pulled closer together (half the default 20px wrap gap) */
+  gap: 10px;
 }
 
 .sr-only {
@@ -175,7 +177,7 @@ img { max-width: 100%; display: block; }
   flex: 0 0 auto;
   height: 1.3em;
   overflow: hidden;
-  font-size: 24px;
+  font-size: 36px;
   line-height: 1.3em;
   font-weight: 400;
   color: var(--black);
@@ -212,7 +214,7 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 860px) {
-  .tagline-slot { font-size: 16px; }
+  .tagline-slot { font-size: 24px; }
 }
 
 /* --------------------------- CATEGORY FILTER --------------------------- */
@@ -1036,7 +1038,8 @@ body.distraction-free .article-preface {
 /* ==================== MOBILE HEADER OVERRIDES (keep last in file) ==================== */
 /* tagline slot scales down and stays snug next to the (also shrunk) logo, header + grid pulled up */
 @media (max-width: 860px) {
-  .tagline-slot { font-size: clamp(9px, 2.8vw, 15px); }
+  .tagline-slot { font-size: clamp(14px, 4.2vw, 22px); }
+  .header-row { gap: 10px; }
 
   .site-header { padding-top: 20px; padding-bottom: 0; }
 
