@@ -149,20 +149,70 @@ img { max-width: 100%; display: block; }
 /* smaller logo on article pages */
 .logo-small { width: min(260px, 60vw); }
 
-.tagline-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 28px;
-  margin-top: 18px;
+.header-row {
+  /* inherits .site-header .wrap flex layout: logo + tagline-slot side by side */
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Rotating "slot machine" tagline next to the logo: cycles 独立文化 → Culture
+   Indipendenti → Независимые культуры → Independent Cultures → loop.
+   The track repeats the first word at the end so the loop restart (100% →
+   0%) lands on two visually identical frames — the reset is imperceptible,
+   and crucially every word (including the return to 中文) gets its own
+   sliding transition instead of an instant cut. */
+.tagline-slot {
+  flex: 0 0 auto;
+  height: 1.3em;
+  overflow: hidden;
   font-size: 24px;
-  line-height: 1;
+  line-height: 1.3em;
   font-weight: 400;
   color: var(--black);
 }
 
+.tagline-track {
+  display: flex;
+  flex-direction: column;
+  animation: tagline-cycle 6s infinite;
+}
+
+.tagline-track span {
+  height: 1.3em;
+  line-height: 1.3em;
+  white-space: nowrap;
+}
+
+@keyframes tagline-cycle {
+  /* 4 real words, each held for an identical ~16.67% (1s of the 6s cycle)
+     + a slide into the next. The 5th span (duplicate 中文) exists only so
+     the last slide has somewhere to go — it arrives at a single instant
+     (100%), with no hold of its own, so the loop drops straight back into
+     中文's own hold. Hold time was halved (2s → 1s) per feedback that the
+     pause between words felt too long; transition speed unchanged. */
+  0%, 16.67%    { transform: translateY(0); }      /* 独立文化 */
+  25%, 41.67%   { transform: translateY(-20%); }    /* Culture Indipendenti */
+  50%, 66.67%   { transform: translateY(-40%); }    /* Независимые культуры */
+  75%, 91.67%   { transform: translateY(-60%); }    /* Independent Cultures */
+  100%          { transform: translateY(-80%); }    /* 独立文化 duplicate — instant arrival only */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tagline-track { animation: none; }
+}
+
 @media (max-width: 860px) {
-  .tagline-row { font-size: 16px; gap: 18px; }
+  .tagline-slot { font-size: 16px; }
 }
 
 /* --------------------------- CATEGORY FILTER --------------------------- */
@@ -428,6 +478,7 @@ img { max-width: 100%; display: block; }
   overflow: hidden;
   background: var(--grey-4);
   border-radius: var(--radius);
+  transition: filter 0.3s ease;
 }
 
 .card-image img {
@@ -442,6 +493,15 @@ img { max-width: 100%; display: block; }
 .card-content {
   padding: 16px 20px 22px 20px;
   min-width: 0;
+  background: var(--page-bg);
+  transition: filter 0.3s ease;
+}
+
+/* Hover: invert image and text box together (single filter, so both flip
+   as one coherent color swap — background/text/photo all invert at once). */
+.card:hover .card-image,
+.card:hover .card-content {
+  filter: invert(1);
 }
 
 
@@ -974,15 +1034,9 @@ body.distraction-free .article-preface {
 }
 
 /* ==================== MOBILE HEADER OVERRIDES (keep last in file) ==================== */
-/* tagline always on one single line (font scales with screen width), header + grid pulled up */
+/* tagline slot scales down and stays snug next to the (also shrunk) logo, header + grid pulled up */
 @media (max-width: 860px) {
-  .tagline-row {
-    flex-wrap: nowrap;
-    white-space: nowrap;
-    font-size: clamp(9px, 2.2vw, 14px);
-    gap: 10px;
-    margin-top: 10px;
-  }
+  .tagline-slot { font-size: clamp(9px, 2.8vw, 15px); }
 
   .site-header { padding-top: 20px; padding-bottom: 0; }
 
