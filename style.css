@@ -3,6 +3,15 @@
    Helvetica + pillole pastello. Minimale, veloce, senza elementi superflui.
    ========================================================================== */
 
+@font-face {
+  font-family: "Helvetica Now Display XBlack";
+  src: url("fonts/helvetica-now-display-xblack.woff") format("woff"),
+       url("fonts/helvetica-now-display-xblack.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Pastel category palette (badges, pills, cards) */
   --color-music: #F0FF99;
@@ -536,6 +545,7 @@ img { max-width: 100%; display: block; }
 }
 
 .card-title {
+  font-family: "Helvetica Now Display XBlack", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 18px;
   font-weight: 900;
   line-height: 1.18;

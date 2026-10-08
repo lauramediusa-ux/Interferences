@@ -524,6 +524,29 @@ TRANSLATIONS = {
     },
 }
 
+import re as _re
+
+# Proper nouns / acronyms that must keep their capitals when an ALL-CAPS card
+# title is converted to sentence case.
+PROPER_NOUNS = [
+    "Milano", "Milan", "Милане", "Милан", "Tempio", "Berghain", "Elisa Bee", "Dolce Potente",
+    "Puglia", "Sardegna", "Sardinia", "Пульи", "Сардинии", "Oriental Techno Club",
+    "Urban Dancing Prophets", "Italo Ghetto", "Europa", "Europe", "Italy's", "Italy", "Italia",
+    "AI", "ИИ", "Bari", "Италии", "Европе", "Милана", "Asian", "Italian",
+]
+
+def sentence_case(title, lang):
+    """Card titles are stored ALL CAPS; the homepage wants normal casing
+    (capital only at the start of each sentence + proper nouns)."""
+    if lang == "zh" or title != title.upper():
+        return title
+    s = title.lower()
+    s = _re.sub(r"(^|[.?!]\s+)(\S)", lambda m: m.group(1) + m.group(2).upper(), s)
+    for p in sorted(set(PROPER_NOUNS), key=len, reverse=True):
+        s = _re.sub(r"(?<!\w)" + _re.escape(p.lower()) + r"(?!\w)", p, s, flags=_re.IGNORECASE)
+    # re-capitalise sentence starts that a proper-noun pass may have lowered
+    return s
+
 def loc(path, lang):
     """Prefix an asset/article path with the extra '../' needed when the
     page being generated lives inside a /en /zh /ru subfolder."""
@@ -661,7 +684,7 @@ for lang in LANGS:
         for a in page_articles:
             slug = a["slug"]
             tr = TRANSLATIONS.get(slug, {}).get(lang, {})
-            title = tr.get("title", a["title"])
+            title = sentence_case(tr.get("title", a["title"]), lang)
             desc = tr.get("desc", a["desc"])
             # Images always live in the shared root /articles/ folder (not
             # duplicated per language), so they always need the loc() prefix.
