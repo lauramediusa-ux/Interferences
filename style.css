@@ -612,6 +612,17 @@ body.distraction-free .article-category {
   color: var(--black) !important;
 }
 
+/* with the photo hidden, the empty media box (holding the category badge)
+   inverts on hover together with the text box, so it's clear they're one card */
+body.distraction-free .card-media {
+  background: var(--page-bg);
+  transition: filter 0.3s ease;
+}
+
+body.distraction-free .card:hover .card-media {
+  filter: invert(1);
+}
+
 body.distraction-free .filter-pill:not([data-cat="all"]):not(.dfree-toggle) {
   background: transparent;
   border-color: var(--black);
