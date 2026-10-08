@@ -612,12 +612,6 @@ body.distraction-free .article-category {
   color: var(--black) !important;
 }
 
-body.distraction-free .card-category {
-  position: static;
-  display: inline-block;
-  margin-bottom: 8px;
-}
-
 body.distraction-free .filter-pill:not([data-cat="all"]):not(.dfree-toggle) {
   background: transparent;
   border-color: var(--black);
