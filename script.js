@@ -56,6 +56,7 @@ document.addEventListener('click', function (e) {
         var isOn = document.body.classList.toggle('distraction-free');
         toggle.classList.toggle('active', isOn);
         localStorage.setItem(DFREE_KEY, isOn ? '1' : '0');
+        if (typeof drawRowLines === 'function') drawRowLines();
       });
     }
   });

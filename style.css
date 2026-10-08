@@ -618,11 +618,31 @@ body.distraction-free .article-category {
   color: var(--black) !important;
 }
 
-/* with the photo hidden, the empty media box (holding the category badge)
-   inverts on hover together with the text box, so it's clear they're one card */
+/* with the photo hidden, topic + article become ONE compact box: the media
+   band collapses to zero height and the category badge sits top-right on the
+   same row as the date; the whole card inverts together on hover */
+body.distraction-free .grid {
+  grid-auto-rows: 0 auto;
+}
+
 body.distraction-free .card-media {
+  overflow: visible;
+  height: 0;
   background: var(--page-bg);
   transition: filter 0.3s ease;
+}
+
+body.distraction-free .card-category {
+  top: 15px;
+  right: 20px;
+}
+
+body.distraction-free .card-content {
+  padding-top: 18px;
+}
+
+body.distraction-free .card-title {
+  margin-top: 14px;
 }
 
 body.distraction-free .card:hover .card-media {
