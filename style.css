@@ -266,6 +266,12 @@ img { max-width: 100%; display: block; }
 .filter-pill[data-cat="ideas"] { background: var(--accent-ideas); }
 .filter-pill[data-cat="interviews"] { background: var(--accent-interviews); }
 
+/* selected topic: black outline (2px total, drawn inward so nothing shifts) */
+.filter-pill.active[data-cat]:not([data-cat="all"]) {
+  border-color: var(--black);
+  box-shadow: inset 0 0 0 1px var(--black);
+}
+
 /* Distraction-free toggle (distinct from category pills) */
 
 .dfree-toggle {
