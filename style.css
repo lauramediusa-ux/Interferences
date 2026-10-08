@@ -632,11 +632,6 @@ body.distraction-free .card-media {
   transition: filter 0.3s ease;
 }
 
-body.distraction-free .card-category {
-  top: 15px;
-  right: 20px;
-}
-
 body.distraction-free .card-content {
   padding-top: 18px;
 }
