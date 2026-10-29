@@ -255,7 +255,7 @@ REAL_ARTICLES = [
      "desc": "Un percorso libero tra jungle, techno, prog, electro e breakbeat: la ricerca musicale, la residenza al Tempio e la nascita di un'identità capace di trasformare ogni set in un viaggio imprevedibile.",
      "category": "interviews", "author": "Thomas Anderson", "date": date(2026, 10, 27),
      "href": "articles/interviews-tania-kim-intervista.html",
-     "image": "articles/tania-kim-4-hu-xin.png"},
+     "image": "articles/tania-kim-4-hu-xin.webp"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
