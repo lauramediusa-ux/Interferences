@@ -18,7 +18,7 @@ var DFREE_KEY = 'interference-distraction-free';
     if (revealed) return;
     revealed = true;
     document.body.classList.add('preloaded');
-    if (typeof startHomeReveal === 'function') startHomeReveal();
+    if (typeof startHome === 'function') startHome();
   }
   function revealAfterMin() {
     var elapsed = Date.now() - start;
@@ -205,104 +205,86 @@ function startHomeReveal() {
   cards.forEach(function (c) { io.observe(c); });
 }
 
-// --- Home intro: logo revealed by scroll -----------------------------------
-// First home visit per browser session. A spacer (one screen tall) sits above
-// the header; while it scrolls away a fixed copy of the logo is wiped in from
-// the left at the centre of the screen, then travels and scales to the exact
-// spot/size of the real logo, where it hands over seamlessly.
-(function () {
-  var INTRO_KEY = 'interference-intro-seen';
-  var isHome = !!document.querySelector('.filters') && !/page-\d+\.html/.test(location.pathname);
+// --- Home intro: photo veil (plays once per session; ?intro forces it) -------
+var PANEL_MS = 900, STAGGER_MS = 170, OVERLAP_MS = 220, LIFT_MS = 1200;
+
+function startHome() {
+  var body = document.body;
+  if (!body.classList.contains('home')) return;
+  var overlay = document.getElementById('introOverlay');
+  var panels = overlay ? [].slice.call(overlay.querySelectorAll('.intro-panel')) : [];
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var force = /[?&]intro\b/.test(location.search);
   var seen = false;
-  try { seen = sessionStorage.getItem(INTRO_KEY) === '1'; } catch (e) {}
-  if (!isHome || reduce || seen) return;
+  try { seen = sessionStorage.getItem('interference-intro-seen') === '1'; } catch (e) {}
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var realLogo = document.querySelector('.site-header .logo');
-    var realImg = realLogo && realLogo.querySelector('img');
-    var tagline = document.querySelector('.tagline-slot');
-    if (!realImg) return;
+  function ready(delay) {
+    setTimeout(function () {
+      body.classList.add('is-ready');
+      setTimeout(startHomeReveal, 500);
+    }, delay);
+  }
 
-    var spacer, overlay, hint, curD = 0, D = 0, W = 0, H = 0, x1 = 0, y1 = 0, x0 = 0, y0 = 0, s0 = 1;
-    var active = false;
+  if (!overlay || !panels.length || reduce || (seen && !force)) {
+    if (overlay) overlay.remove();
+    ready(80);
+    return;
+  }
+  try { sessionStorage.setItem('interference-intro-seen', '1'); } catch (e) {}
 
-    function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
 
-    function measure() {
-      // natural (spacer-free) position of the real logo = where it must land
-      var r = realImg.getBoundingClientRect();
-      W = r.width; H = r.height;
-      x1 = r.left + window.pageXOffset;
-      y1 = r.top + window.pageYOffset - curD;
-      D = Math.max(520, window.innerHeight);
-      curD = D;
-      spacer.style.height = D + 'px';
-      var vw = document.documentElement.clientWidth, vh = window.innerHeight;
-      s0 = Math.max(1, Math.min((vw * 0.9) / W, 2.4));
-      x0 = (vw - W * s0) / 2;
-      y0 = (vh - H * s0) / 2;
-      overlay.style.width = W + 'px';
-    }
+  var imgs = [].slice.call(overlay.querySelectorAll('img'));
+  var loaded = Promise.all(imgs.map(function (im) {
+    return im.complete ? Promise.resolve() : new Promise(function (r) { im.onload = im.onerror = r; });
+  }));
+  var timeout = new Promise(function (r) { setTimeout(r, 1500); });
 
-    function update() {
-      var y = window.pageYOffset;
-      var p = Math.max(0, Math.min(1, y / D));
-      if (p >= 1) {
-        if (active) {
-          active = false;
-          overlay.style.display = 'none';
-          hint.style.display = 'none';
-          document.body.classList.remove('intro-on');
-        }
-        if (tagline) tagline.style.opacity = '';
-        return;
-      }
-      if (!active) {
-        active = true;
-        overlay.style.display = '';
-        hint.style.display = '';
-        document.body.classList.add('intro-on');
-      }
-      var p1 = Math.min(1, p / 0.4);
-      var p2 = Math.max(0, (p - 0.4) / 0.6);
-      var e1 = ease(p1), e2 = ease(p2);
-      overlay.style.clipPath = 'inset(0 ' + ((1 - e1) * 100) + '% 0 0)';
-      var s = s0 + (1 - s0) * e2;
-      var x = x0 + (x1 - x0) * e2;
-      var yy = y0 + (y1 - y0) * e2;   // at scroll = D the real logo sits at viewport y1
-      overlay.style.transform = 'translate(' + x + 'px,' + yy + 'px) scale(' + s + ')';
-      hint.style.opacity = Math.max(0, 1 - p * 8);
-      if (tagline) tagline.style.opacity = e2;
-    }
-
-    // build overlay + spacer
-    spacer = document.createElement('div');
-    spacer.className = 'intro-spacer';
-    document.body.insertBefore(spacer, document.querySelector('.site-header'));
-    overlay = document.createElement('div');
-    overlay.id = 'logo-intro';
-    overlay.setAttribute('aria-hidden', 'true');
-    var img = document.createElement('img');
-    img.src = realImg.currentSrc || realImg.src;
-    overlay.appendChild(img);
-    document.body.appendChild(overlay);
-    hint = document.createElement('div');
-    hint.id = 'intro-hint';
-    hint.textContent = 'Scroll \u2193';
-    document.body.appendChild(hint);
-
-    function init() {
-      measure();
-      active = false;
-      // restore a mid-intro scroll position gracefully
-      update();
-    }
-    if (realImg.complete) init(); else realImg.addEventListener('load', init);
-
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', function () { measure(); update(); });
-    try { sessionStorage.setItem(INTRO_KEY, '1'); } catch (e) {}
-    window.scrollTo(0, 0);
+  Promise.race([loaded, timeout]).then(function () {
+    requestAnimationFrame(function () {
+      setTimeout(function () {
+        document.documentElement.classList.add('intro-lock');
+        panels.forEach(function (p, i) { setTimeout(function () { p.classList.add('is-in'); }, i * STAGGER_MS); });
+        var lastEnds = (panels.length - 1) * STAGGER_MS + PANEL_MS;
+        setTimeout(function () {
+          overlay.classList.add('is-lifting');
+          document.documentElement.classList.remove('intro-lock');
+          ready(380);
+          setTimeout(function () { overlay.remove(); }, LIFT_MS + 100);
+        }, Math.max(0, lastEnds - OVERLAP_MS));
+      }, 120);
+    });
   });
-})();
+}
+
+// --- Home: lime aura following the pointer over the logo ----------------------
+document.addEventListener('DOMContentLoaded', function () {
+  if (!document.body.classList.contains('home')) return;
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var link = document.querySelector('.site-header .logo a');
+  var img = link && link.querySelector('img');
+  if (!img) return;
+  var glow = document.createElement('span');
+  glow.className = 'logo-aura';
+  glow.setAttribute('aria-hidden', 'true');
+  glow.style.setProperty('--logo-url', 'url("' + (img.currentSrc || img.src) + '")');
+  link.appendChild(glow);
+
+  var header = document.querySelector('.site-header');
+  var cx = 0, cy = 0, tx = 0, ty = 0, running = false;
+  function loop() {
+    cx += (tx - cx) * 0.18; cy += (ty - cy) * 0.18;
+    glow.style.setProperty('--gx', cx.toFixed(1) + 'px');
+    glow.style.setProperty('--gy', cy.toFixed(1) + 'px');
+    if (Math.abs(tx - cx) > 0.3 || Math.abs(ty - cy) > 0.3) requestAnimationFrame(loop); else running = false;
+  }
+  header.addEventListener('mousemove', function (e) {
+    var r = link.getBoundingClientRect();
+    tx = e.clientX - r.left; ty = e.clientY - r.top;
+    if (!glow.classList.contains('on')) { cx = tx; cy = ty; glow.classList.add('on'); }
+    if (!running) { running = true; requestAnimationFrame(loop); }
+  });
+  header.addEventListener('mouseleave', function () { glow.classList.remove('on'); });
+});

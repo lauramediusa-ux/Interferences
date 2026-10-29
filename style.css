@@ -628,40 +628,97 @@ img { max-width: 100%; display: block; }
   .card-content { opacity: 1; }
 }
 
-/* ------------------- HOME INTRO: logo revealed by scroll ------------------- */
-/* First visit of the session: the page opens on an empty screen; scrolling
-   wipes the logo in (left to right) and then carries it to its real spot in
-   the header while the page rises into view. See script.js. */
-#logo-intro {
+/* ------------------------- HOME INTRO (photo veil) ------------------------- */
+/* Photo panels, each as tall as the window, rise from the bottom one after the
+   other (they look like stacked horizontal slices mid-sequence); then the whole
+   veil lifts and uncovers the home, already in place underneath. One easing
+   curve for everything: it starts decisively and settles slowly. */
+:root {
+  --ease: cubic-bezier(0.16, 0.84, 0.44, 1);
+  --ease-inout: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+#introOverlay {
   position: fixed;
-  left: 0;
+  inset: 0;
+  z-index: 100;
+  background: var(--black);
+  overflow: hidden;
+  transition: transform 1200ms var(--ease-inout);
+}
+#introOverlay.is-lifting { transform: translateY(-100%); }
+
+.intro-panel {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform: translateY(100%);
+  transition: transform 900ms var(--ease);
+  will-change: transform;
+}
+.intro-panel.is-in { transform: translateY(0); }
+.intro-panel img {
+  position: absolute;
   top: 0;
-  z-index: 40;
-  pointer-events: none;
-  transform-origin: top left;
-  will-change: transform, clip-path;
-}
-
-#logo-intro img { display: block; width: 100%; height: auto; }
-
-body.intro-on .site-header .logo { visibility: hidden; }
-
-#intro-hint {
-  position: fixed;
   left: 0;
-  right: 0;
-  bottom: 28px;
-  z-index: 41;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  pointer-events: none;
-  animation: hint-bob 1.6s ease-in-out infinite;
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+  display: block;
+  transform: translateY(-16.6%);
+  transition: transform 900ms var(--ease);
+  will-change: transform;
 }
+.intro-panel.is-in img { transform: translateY(0); }
 
-@keyframes hint-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+html.intro-lock, html.intro-lock body { overflow: hidden; height: 100%; }
+
+/* ----------------------- HOME ENTRANCES (after the veil) ----------------------- */
+/* logo: rises from behind a sharp edge (clips, doesn't fade) */
+body.home .site-header .logo a { display: block; overflow: hidden; position: relative; }
+body.home .site-header .logo img {
+  transform: translateY(105%);
+  transition: transform 950ms var(--ease);
+}
+body.home.is-ready .site-header .logo img { transform: none; }
+
+/* tagline + filters: rise 28px while fading in */
+body.home .tagline-slot,
+body.home .filters {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 800ms var(--ease), transform 800ms var(--ease);
+}
+body.home .tagline-slot { transition-delay: 300ms; }
+body.home .filters { transition-delay: 450ms; }
+body.home.is-ready .tagline-slot,
+body.home.is-ready .filters { opacity: 1; transform: none; }
+
+/* lime aura that follows the pointer over the logo */
+.logo-aura {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--accent-music);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  -webkit-mask-image: radial-gradient(circle var(--aura-r, 190px) at var(--gx, -999px) var(--gy, -999px), #000 0%, rgba(0,0,0,0.55) 45%, transparent 100%), var(--logo-url);
+  -webkit-mask-size: 100% 100%, 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-image: radial-gradient(circle var(--aura-r, 190px) at var(--gx, -999px) var(--gy, -999px), #000 0%, rgba(0,0,0,0.55) 45%, transparent 100%), var(--logo-url);
+  mask-size: 100% 100%, 100% 100%;
+  mask-repeat: no-repeat;
+  mask-composite: intersect;
+}
+.logo-aura.on { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  #introOverlay, .intro-panel, .intro-panel img,
+  body.home .site-header .logo img, body.home .tagline-slot, body.home .filters { transition: none !important; }
+  body.home .site-header .logo img { transform: none; }
+  body.home .tagline-slot, body.home .filters { opacity: 1; transform: none; }
+}
 
 /* ------------------------- DISTRACTION-FREE MODE ------------------------- */
 

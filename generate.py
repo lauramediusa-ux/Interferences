@@ -606,6 +606,10 @@ def pagination_nav(current, lang):
         items.append('<span class="page-btn disabled">{}</span>'.format(s["next"]))
     return '<nav class="pagination">\n  ' + "\n  ".join(items) + '\n</nav>'
 
+INTRO_TPL = '''<div id="introOverlay" aria-hidden="true">
+{panels}</div>
+'''
+
 PAGE_TPL = '''<!DOCTYPE html>
 <html lang="{html_lang}">
 <head>
@@ -632,10 +636,10 @@ PAGE_TPL = '''<!DOCTYPE html>
 <link rel="apple-touch-icon" href="{asset}interferences_favicon.png">
 <link rel="stylesheet" href="{asset}style.css">
 </head>
-<body>
+<body class="home">
 
 {preloader}
-<header class="site-header">
+{intro}<header class="site-header">
   <div class="wrap header-row">
     <div class="logo"><a href="/"><img src="{asset}logo.png" alt="INTERFERENCES"></a></div>
     <div class="tagline-slot">
@@ -692,6 +696,7 @@ for lang in LANGS:
 
     for n, page_articles in enumerate(pages, start=1):
         cards = ""
+        intro_imgs = []
         for a in page_articles:
             slug = a["slug"]
             tr = TRANSLATIONS.get(slug, {}).get(lang, {})
@@ -701,6 +706,8 @@ for lang in LANGS:
             # duplicated per language), so they always need the loc() prefix.
             image = loc(a.get("image", "https://picsum.photos/seed/{}/900/700".format(slug)), lang) \
                 if not a.get("image", "").startswith("http") else a.get("image")
+            if n == 1 and len(intro_imgs) < 3 and not image.startswith("http"):
+                intro_imgs.append(image)
             # Articles themselves DO have a per-language translated copy
             # (en/articles/, zh/articles/, ru/articles/) once translated, so
             # for lang != "it" the homepage card should link straight to
@@ -728,6 +735,9 @@ for lang in LANGS:
             meta_desc=s["meta_desc"],
             asset=("" if lang == "it" else "../"),
             preloader=PRELOADER,
+            intro=(INTRO_TPL.format(panels="".join(
+                '  <div class="intro-panel"><img src="{}" alt=""></div>\n'.format(i) for i in intro_imgs))
+                if (n == 1 and intro_imgs) else ""),
             see_all=s["see_all"], dfree=s["dfree"],
             lang_switcher=lang_switcher_html(lang, page_fn),
             cards=cards, pagination=pagination_nav(n, lang),
