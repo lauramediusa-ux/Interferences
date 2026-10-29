@@ -18,6 +18,7 @@ var DFREE_KEY = 'interference-distraction-free';
     if (revealed) return;
     revealed = true;
     document.body.classList.add('preloaded');
+    if (typeof startHomeReveal === 'function') startHomeReveal();
   }
   function revealAfterMin() {
     var elapsed = Date.now() - start;
@@ -181,3 +182,127 @@ function shareArticle(platform) {
     window.open(targets[platform], '_blank', 'noopener,noreferrer,width=600,height=600');
   }
 }
+
+
+// --- Home: cards reveal (black curtain) as they enter the viewport ----------
+function startHomeReveal() {
+  var cards = document.querySelectorAll('.grid .card');
+  if (!cards.length) return;
+
+  function play(batch) {
+    batch.forEach(function (c, i) { c.style.setProperty('--i', i % 4); c.classList.add('in'); });
+    setTimeout(function () { batch.forEach(function (c) { c.classList.add('done'); }); }, 2200);
+  }
+
+  if (!('IntersectionObserver' in window)) { play([].slice.call(cards)); return; }
+  var io = new IntersectionObserver(function (entries) {
+    var batch = entries.filter(function (e) { return e.isIntersecting; })
+                       .map(function (e) { return e.target; });
+    if (!batch.length) return;
+    batch.forEach(function (c) { io.unobserve(c); });
+    play(batch);
+  }, { threshold: 0.12 });
+  cards.forEach(function (c) { io.observe(c); });
+}
+
+// --- Home intro: logo revealed by scroll -----------------------------------
+// First home visit per browser session. A spacer (one screen tall) sits above
+// the header; while it scrolls away a fixed copy of the logo is wiped in from
+// the left at the centre of the screen, then travels and scales to the exact
+// spot/size of the real logo, where it hands over seamlessly.
+(function () {
+  var INTRO_KEY = 'interference-intro-seen';
+  var isHome = !!document.querySelector('.filters') && !/page-\d+\.html/.test(location.pathname);
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var seen = false;
+  try { seen = sessionStorage.getItem(INTRO_KEY) === '1'; } catch (e) {}
+  if (!isHome || reduce || seen) return;
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var realLogo = document.querySelector('.site-header .logo');
+    var realImg = realLogo && realLogo.querySelector('img');
+    var tagline = document.querySelector('.tagline-slot');
+    if (!realImg) return;
+
+    var spacer, overlay, hint, curD = 0, D = 0, W = 0, H = 0, x1 = 0, y1 = 0, x0 = 0, y0 = 0, s0 = 1;
+    var active = false;
+
+    function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+
+    function measure() {
+      // natural (spacer-free) position of the real logo = where it must land
+      var r = realImg.getBoundingClientRect();
+      W = r.width; H = r.height;
+      x1 = r.left + window.pageXOffset;
+      y1 = r.top + window.pageYOffset - curD;
+      D = Math.max(520, window.innerHeight);
+      curD = D;
+      spacer.style.height = D + 'px';
+      var vw = document.documentElement.clientWidth, vh = window.innerHeight;
+      s0 = Math.max(1, Math.min((vw * 0.9) / W, 2.4));
+      x0 = (vw - W * s0) / 2;
+      y0 = (vh - H * s0) / 2;
+      overlay.style.width = W + 'px';
+    }
+
+    function update() {
+      var y = window.pageYOffset;
+      var p = Math.max(0, Math.min(1, y / D));
+      if (p >= 1) {
+        if (active) {
+          active = false;
+          overlay.style.display = 'none';
+          hint.style.display = 'none';
+          document.body.classList.remove('intro-on');
+        }
+        if (tagline) tagline.style.opacity = '';
+        return;
+      }
+      if (!active) {
+        active = true;
+        overlay.style.display = '';
+        hint.style.display = '';
+        document.body.classList.add('intro-on');
+      }
+      var p1 = Math.min(1, p / 0.4);
+      var p2 = Math.max(0, (p - 0.4) / 0.6);
+      var e1 = ease(p1), e2 = ease(p2);
+      overlay.style.clipPath = 'inset(0 ' + ((1 - e1) * 100) + '% 0 0)';
+      var s = s0 + (1 - s0) * e2;
+      var x = x0 + (x1 - x0) * e2;
+      var yy = y0 + (y1 - y0) * e2;   // at scroll = D the real logo sits at viewport y1
+      overlay.style.transform = 'translate(' + x + 'px,' + yy + 'px) scale(' + s + ')';
+      hint.style.opacity = Math.max(0, 1 - p * 8);
+      if (tagline) tagline.style.opacity = e2;
+    }
+
+    // build overlay + spacer
+    spacer = document.createElement('div');
+    spacer.className = 'intro-spacer';
+    document.body.insertBefore(spacer, document.querySelector('.site-header'));
+    overlay = document.createElement('div');
+    overlay.id = 'logo-intro';
+    overlay.setAttribute('aria-hidden', 'true');
+    var img = document.createElement('img');
+    img.src = realImg.currentSrc || realImg.src;
+    overlay.appendChild(img);
+    document.body.appendChild(overlay);
+    hint = document.createElement('div');
+    hint.id = 'intro-hint';
+    hint.textContent = 'Scroll \u2193';
+    document.body.appendChild(hint);
+
+    function init() {
+      measure();
+      active = false;
+      // restore a mid-intro scroll position gracefully
+      update();
+    }
+    if (realImg.complete) init(); else realImg.addEventListener('load', init);
+
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', function () { measure(); update(); });
+    try { sessionStorage.setItem(INTRO_KEY, '1'); } catch (e) {}
+    window.scrollTo(0, 0);
+  });
+})();

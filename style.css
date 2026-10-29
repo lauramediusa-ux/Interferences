@@ -591,6 +591,78 @@ img { max-width: 100%; display: block; }
 
 .card-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
+/* ------------------- HOME REVEAL: black curtain on cards ------------------- */
+/* When a card scrolls into view, a black block slides off its picture
+   (staggered), then the text fades in. script.js adds .in when the card enters
+   the viewport and .done once played, so filtering never replays it. */
+.card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--black);
+  transform-origin: top;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.card-content { opacity: 0; }
+
+.card.in .card-media::after {
+  animation: curtain-up 0.75s cubic-bezier(0.7, 0, 0.2, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+.card.in .card-content {
+  animation: card-text-in 0.5s ease forwards;
+  animation-delay: calc(var(--i, 0) * 90ms + 500ms);
+}
+
+@keyframes curtain-up { from { transform: scaleY(1); } to { transform: scaleY(0); } }
+@keyframes card-text-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.card.done .card-media::after { display: none; }
+.card.done .card-content { opacity: 1; animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-media::after { display: none; }
+  .card-content { opacity: 1; }
+}
+
+/* ------------------- HOME INTRO: logo revealed by scroll ------------------- */
+/* First visit of the session: the page opens on an empty screen; scrolling
+   wipes the logo in (left to right) and then carries it to its real spot in
+   the header while the page rises into view. See script.js. */
+#logo-intro {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 40;
+  pointer-events: none;
+  transform-origin: top left;
+  will-change: transform, clip-path;
+}
+
+#logo-intro img { display: block; width: 100%; height: auto; }
+
+body.intro-on .site-header .logo { visibility: hidden; }
+
+#intro-hint {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 28px;
+  z-index: 41;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  pointer-events: none;
+  animation: hint-bob 1.6s ease-in-out infinite;
+}
+
+@keyframes hint-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
 /* ------------------------- DISTRACTION-FREE MODE ------------------------- */
 
 body.distraction-free .card-image,
