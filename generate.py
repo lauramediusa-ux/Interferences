@@ -250,6 +250,12 @@ REAL_ARTICLES = [
      "category": "society", "author": "Thomas Anderson", "date": date(2026, 9, 2),
      "href": "articles/society-vignaioli-resistenti-tempio-di-bacco.html",
      "image": "articles/vignaioli-2-xfarm-agricoltura-prossima.png"},
+    {"slug": "interviews-tania-kim-intervista",
+     "title": "OLTRE LA TECHNO: TANIA KIM E L'ARTE DI SORPRENDERE IL DANCEFLOOR",
+     "desc": "Un percorso libero tra jungle, techno, prog, electro e breakbeat: la ricerca musicale, la residenza al Tempio e la nascita di un'identità capace di trasformare ogni set in un viaggio imprevedibile.",
+     "category": "interviews", "author": "Thomas Anderson", "date": date(2026, 10, 27),
+     "href": "articles/interviews-tania-kim-intervista.html",
+     "image": "articles/tania-kim-4-hu-xin.png"},
 ]
 
 # Only real articles appear on the site now (demo content retired).
@@ -522,6 +528,11 @@ TRANSLATIONS = {
         "zh": {"title": "反抗无灵魂的葡萄酒 — 谁是“坚守的酿酒人”", "desc": "在Tempio del Futuro Perduto主办的手工酿酒人集市Tempio di Bacco上,葡萄酒重新成为一个关于人、土地,以及对抗那个令其失去灵魂的市场的抵抗故事。"},
         "ru": {"title": "ПРОТИВ БЕЗДУШНОГО ВИНА — КТО ТАКИЕ ВИНОГРАДАРИ СОПРОТИВЛЕНИЯ", "desc": "На Tempio di Bacco, ярмарке ремесленных виноградарей Tempio del Futuro Perduto, вино вновь становится историей людей, земли и сопротивления рынку, лишившему его души."},
     },
+    "interviews-tania-kim-intervista": {
+        "en": {"title": "BEYOND TECHNO: TANIA KIM AND THE ART OF SURPRISING THE DANCEFLOOR", "desc": "A free path through jungle, techno, prog, electro and breakbeat: musical research, the residency at Tempio and the birth of an identity that turns every set into an unpredictable journey."},
+        "zh": {"title": "超越科技舞曲:Tania Kim与让舞池始终充满惊喜的艺术", "desc": "穿行于丛林、科技舞曲、前卫、电子与碎拍之间的自由之路:音乐探索、在Tempio的驻场,以及一种让每场演出都成为不可预知旅程的身份的诞生。"},
+        "ru": {"title": "БОЛЬШЕ, ЧЕМ ТЕХНО: TANIA KIM И ИСКУССТВО УДИВЛЯТЬ ТАНЦПОЛ", "desc": "Свободный путь через джангл, техно, прог, электро и брейкбит: музыкальные поиски, резиденция в Tempio и рождение идентичности, превращающей каждый сет в непредсказуемое путешествие."},
+    },
 }
 
 import re as _re
@@ -531,7 +542,7 @@ import re as _re
 PROPER_NOUNS = [
     "Milano", "Milan", "Милане", "Милан", "Tempio", "Berghain", "Elisa Bee", "Dolce Potente",
     "Puglia", "Sardegna", "Sardinia", "Пульи", "Сардинии", "Oriental Techno Club",
-    "Urban Dancing Prophets", "Italo Ghetto", "Europa", "Europe", "Italy's", "Italy", "Italia",
+    "Urban Dancing Prophets", "Tania Kim", "Italo Ghetto", "Europa", "Europe", "Italy's", "Italy", "Italia",
     "AI", "ИИ", "Bari", "Италии", "Европе", "Милана", "Asian", "Italian",
 ]
 
